@@ -1,0 +1,49 @@
+# Reinforcement Learning Basics and Coding with Reinforcement Learning
+## Reinforcement Learning Basics
+- Reinforcement learning, at its core, involves an agent learning to interact with the environment
+  - The agent performs an action and, as a consequence, the environment will change its state (a new observation for the agent) and provide a reward signal to the agent
+- **State/Observation** (S): Representation of the current situation at time step $t$
+  - e.g. 
+    - Cartpole: *cart position, cart velocity, pole angle, pole velocity at tip*; 
+    - Breakout: *stack of four frames*
+    - Driving: *RGB frames and LiDaR readings*
+  - More detailed observations typically enable agents to better learn
+- **Rewards** (R): A scalar feedback signal from the environment, typically to indicate how well the agent is doing at step $t$
+  - Rewards can be *sparse* or *dense* - the former is typically more difficult to learn in
+  - Reinforcement learning is based on the *maximization of rewards* - all goals of the agent can be described by the maximization of the expected cumulative reward
+  - e.g.
+    - Chess: +/- reward for winning or losing a game
+    - Hedge Fund Manager: +/- reward for each profit or loss in $
+- Sequential Decision Making: There is a *rollout trajectory* of observations, actions, and rewards
+  - $H_t = O_1, R_1, A_1, ... A_{t- 1}, O_t, R_t$
+- **Full Observability**: Agent directly observes the environment state, formally as a Markov decision process (MDP)
+  - Environment State: $S_t^e = f^e(H_t)$
+  - Agent State: $S_t^a = f^a(H_t)$
+  - Fully observability means: $O_t = S_t^e = S_t^a$
+- **Partial Observability**: Agent indirectly observes the environment, formally as a partially observable Markov decision process (POMDP)
+  - e.g. Blackjack (only see public cards)
+  - The agent must construct its own state representation
+    - $S_t^a = (P(S_t^e = s_1), ..., P(s_t^e = s_n))$
+- Components of an RL Agent:
+  - **Policy**: Agent's behavior function - think of this as a classifier that, given a states, outputs an action
+    - Stochastic: $\pi(a|s) = P[A_t=a|S_t=s]$
+    - Deterministic: $a^* = \arg \max_a \pi(a|s)$
+    - The action can be either *discrete* or *continuous*, which may influence the structure of the policy function
+  - **Value Function**: How good is each state or action
+    - Formally, this is the expected discount sum of future rewards under a particular policy $\pi$
+    - There is a discount factor (hyperparameter, $\gamma$) that weighs immedidate versus future rewards
+    - $v_\pi(s) = E_\pi[G_t | S_t = s] = E_\pi [\sum_{k=0}^\infty \gamma^k R_{t+k+1} | S_t=s]$
+    - Q-Function can be used to select among actions:
+      - $q_\pi(s, a) = E_\pi[G_t | S_t = s, A_t = a] = E_\pi [\sum_{k=0}^\infty \gamma^k R_{t+k+1} | S_t=s, A_t = a]$
+    - e.g. Driving
+      - v(s) may be high on an urban highway since it is familiar terrain (so the state is relatively 'good')
+      - v(s) may be low on rocky or sandy terrain since a typical driver may not be familiar with it (so the state is relatively 'bad')
+      - Keep in mind, though, that value is conditioned on policy, so the aforementioned values may not necessarily be the case if the policy is good/bad
+    - e.g. Driving (Q): Say you are in the leftmost lane of the freeway
+      - Q(s, go-straight) = 10
+      - Q(s, turn-left) = -100 (Hits barrier)
+      - Q(s, turn-right) = 2? (Not necessarily bad)
+  - **(World) Model**: Agent's representation of the environment - this is usually optional
+    - Can be used to predict what the environment will do next
+    - Predict Next State: $P_{ss'}^a = P[S_{t+1}=s' | S_t=s, A_t = a]$
+    - Predict Next Reward: $R_{s}^a = P[R_{t+1} | S_t=s, A_t = a]$
