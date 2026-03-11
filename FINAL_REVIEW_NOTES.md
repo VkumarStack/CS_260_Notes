@@ -1,0 +1,155 @@
+# Markov Decision Processes and Policy / Value Iteration
+- **Markov Decision Processes** model environments where *future states* are independent of *past states* given the *present state*
+  - $P^\pi(s' | s) = \sum_{a \in A} \pi(a|s)P(s'|s, a)$
+  - $R^\pi(s) = \sum_{a \in A}\pi(a|s)R(s, a)$
+- **Value Function** is the expected return starting from state $s$ and following policy $\pi$ while the **Action-Value Function** $q^\pi(s,a)$ is the expected return starting from state $s$ and taking action $a$, and then following policy $\pi$
+  - $v^\pi(s) = \sum_{a \in A}\pi(a|s)q^\pi(s, a)$
+  - $q^\pi(s, a) = R^a_s + \gamma \sum_{s' \in S}P(s' |s ,a) v^\pi(s')$
+  - Bellman Relationships:
+    - $v^\pi(s) = \mathbb{E}_\pi[R_{t+1} + \gamma v^\pi (s_{t+1}) | s_t = s] = \sum_{a \in A}\pi(a|s)(R(s, a) + \gamma \sum_{s' \in S} P(s' | s, a) v^\pi (s'))$
+      - Intuition: Marginalize over all possible actions (based on distribution from policy) - getting the expected return based on the immediate reward as well as the discounted future reward (which we must base on all possible next states given current state and the marginalized action)
+    - $q^\pi(s,a) = \mathbb{E}_\pi[R_{t+1} + \gamma q^\pi (s_{t+1}, A_{t+1}) | s_t = s, A_t = a] = R(s, a) + \gamma \sum_{s' \in S}P(s' | s, a) \sum_{a' \in A} \pi(a' | s')q^\pi (s', a')$
+      - Intuition: The immediate action is given (as a parameter), so we just need to marginalize the *next state* given the current state and chosen action; from there, we average over all action-value functions as well
+- Given a policy and the full environment dynamics, the value function associated with that policy can be computed via dynamic programming - **synchronous backup**
+  - $v_{t+1}(s) = \sum_{a \in A}\pi(a|s) (R(s, a) + \gamma \sum_{s' \in S} P(s' | s, a) v_t (s'))$
+- To compute the **optimal policy**, we can maximize over the optimal state-action value function
+  - **Policy Iteration**: Iterate between evaluating the policy $\pi$ and improving it greedily with respect to $v^\pi$
+    - Evaluation: Use synchronous backup to find $v^\pi$
+    - Improvement:
+      - Compute $q^{\pi_i}(s, a) = R(s, a) + \gamma \sum_{s' \in S}P(s' | s, a) v^{\pi_i}(s')$
+        - This gives a *q-table*, where there is an *expected reward* for each action in each state
+      - Compute $\pi_{i + 1}(s) = \argmax_{a} q^{\pi_i}(s, a)$
+    - Repeat until convergence (policy does not change) - this means $q^\pi(s, \pi(s)) = v^\pi(s)$
+  - **Value Iteration**: Iterate directly to find the optimal $v^\pi$, and then extract the policy once afterwards
+    - Repeat:
+      - $q_{k + 1}(s, a) = R(s, a) + \gamma \sum_{s' \in S}P(s' | s, a) v_k(s')$
+      - $v_{k + 1}(s) = \max_{a} q_{k+1}(s,a)$
+    - After convergence:
+      - $\pi(s) = \argmax_{a} [R(s, a) + \gamma \sum_{s' \in S}P(s' | s, a) v_{k + 1}(s')]$
+- The aforementioned algorithms *only work if the model (environment) dynamics are known*
+# Model-Free Prediction and Control
+- **Monte Carlo Policy Evaluation**: Sample trajectories, compute the returns, and average them to estimate $v^\pi(s)$
+  - This works well, even in known environments, if transition probabilities are too complex to compute
+  - Algorithm:
+    - Loop:
+      - Generate an episode following $\pi$: $S_0, A_0, R_1, S_1, A_1, R_2, ..., S_{T_1}, A_{T_1}, R_T$
+      - Loop for each step of episode backwards: $t = T - 1, T - 2, ... 0$:
+        - $G \leftarrow \gamma G + R_{t+1}$
+        - Append $G$ to $Returns(S_t)$
+        - $V(S_t) \leftarrow \text{average}(Returns(S_t))$
+  - Can use an incremental mean: $\mu_t = \frac{1}{t} \sum_{j=1}^t x_j = \mu_{t-1} + \frac{1}{t}(x_t - \mu_{t-1})$
+- **Temporal Difference Learning**: Uses *boostrapping*, which involves updating an estimate using *other estimates* (like in dynamic programming) rather than waiting for the whole episode to complete. This is advantageous in that it can learn from *incomplete* sequences and *non-terminating* environments
+  - **TD(0)**: $v(S_t) \leftarrow v(S_t) + \alpha (R_{t+1} + \gamma v(S_{t+1}) - v(S_t))$
+    - View $[R_{t+1} + \gamma v(S_{t+1})] - v(S_t)$ as the *error* of the existing estimate, which acts as a correction
+  - **n-step**: $G_t^n = R_{t+1} + \gamma R_{t+2} + ... + \gamma^{n-1}R_{t+n} + \gamma^n v(S_{t+n})$
+    - $v(S_t) \leftarrow v(S_t) + \alpha(G^n_t - v(S_t))$
+- **Generalized Policy Iteration**:
+  - **Monte Carlo with Exploring Starts**: 
+    - Loop Forever:
+      - Choose $S_0 \in \mathcal{S}, A_0 \in \mathcal{A}(S_0)$ randomly such that all pairs have probability > 0
+      - Generate an episode from $S_0, A_0$ following $\pi$: $S_0, A_0, R_1, ..., S_{T-1}, A_{T-1}, R_t$
+      - Loop for each step of episode backwards: $t = T - 1, T - 2, ..., 0$:
+        - $G \leftarrow \gamma G + R_{t+1}$
+        - Append $G$ to $Returns(S_t, A_t)$
+        - $Q(S_t, A_t) \leftarrow \text{average}(Returns(S_t, A_t))$
+        - $\pi(S_t) \leftarrow \argmax_{a} Q(S_t, a)$
+  - **Monte Carlo with Epsilon-Greedy Exploration**: 
+    - $\epsilon$-Greedy Exploration puts probability $1 - \epsilon$ to choose the greedy (optimal) action and probability $\epsilon$ to choose a random action - the goal is to ensure there is sufficient exploration being done rather than exploiting a (potentially bad) policy
+    - Algorithm:
+      - Loop:
+        - Sample $(S_1, A_1, R_2, ..., S_T) \sim \pi_k$
+        - For each $S_t$ and $A_t$:
+          - $N(S_t, A_t) \leftarrow N(S_t, A_t) + 1$
+          - $Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \frac{1}{N(S_t, A_t)}(G_t - Q(S_t, A_t))$
+            - This is the incremental mean
+        - $k \leftarrow k + 1$, $\epsilon \leftarrow 1 / k$
+          - Anneal $\epsilon$
+        - $\pi_k = \epsilon-\text{greedy}(Q)$
+  - **On-Policy TD Control (SARSA)**: Estimates $Q$ using TD
+    - Repeat for each episode:
+      - Initialize $S$
+      - Choose $A$ from $S$ using $\epsilon$-greedy policy
+      - Repeat (for each step of episode):
+        - Take action $A$, observe $R$, $S'$
+        - Choose $A'$ from $S'$ using $\epsilon$-greedy
+        - $Q(S, A) \leftarrow Q(S,A) + \alpha[R + \gamma Q(S', A') - Q(S, A)]$
+          - This can be generalized to n-step as well: $q_t^{(n)}= R_{t+1} + \gamma R_{t+2} + ... + \gamma^{n-1}R_{t+n} + \gamma^n Q(S_{t+n}, A_{t+n})$
+        - $S \leftarrow S'; A \leftarrow A'$
+  - **Off-Policy TD Control (Q-Learning)**: Use *two different policies* - one being learned about and becomes optimal policy, and another which is more exploratory (used to generate trajectories); doing this allows for reuse of old experiences
+    - Repeat for each episode:
+      - Initialize $S$
+      - Repeat (for each step of episode):
+        - Choose $A$ from $S$ using $\epsilon$-greedy derived from $Q$
+          - This is the **behavior policy**, which is epsilon-greedy on the target $Q$
+        - Take action $A$, observe $R$, $S'$
+        - $Q(S, A) \leftarrow Q(S,A) + \alpha[R + \gamma \max_a Q(S', a) - Q(S, A)]$  
+          - This is the **target policy**, which is fully greedy on $Q$
+          - The learning 'acts' as if it took the target policy when updating, but the steps actually taken in the environment solely use the behavior policy
+        - $S \leftarrow S'$
+- **Importance Sampling**: Rather than sampling from a given distribution, it may be easier to sample from a *different distribution* and then correct the weight (e.g. easier to sample from behavior policy than target)
+  - $\mathbb{E}_{\tau \sim \pi}[r(\tau)] = \int P_\pi(\tau) r(\tau) d\tau = \int P_\mu (\tau) \frac{P_\pi (\tau)}{P_\mu (\tau)} r(\tau) d\tau = \mathbb{E}_{\tau \sim \mu}[\frac{P_\pi (\tau)}{P_\mu (\tau)} r(\tau)] \approx \frac{1}{n} \sum_i \frac{P_\pi (\tau_i)}{P_\mu (\tau_i)} r(\tau_i)$
+  - This can be used to perform off-policy Monte Carlo and TD Learning; use the behavior policy to generate an episode or a TD target, and then reweight the return or TD target to use for the update
+    - e.g. TD:
+      - $V(S_t) \leftarrow V(S_t) + \alpha(\frac{\pi(A_t | S_t)}{\mu(A_t | S_t)}(R_{t+1} + \gamma V(S_{t+1})) - V(S_t))$
+# Value Function Approximation and Deep Q-Learning
+- Same approaches as model-free prediction work with function approximators
+  - Monte Carlo Value Function Approximation: $\Delta \bold{w} = \alpha (G_t - \hat{v}(S_t, \bold{w})) \nabla_{\bold{w}} \hat{v}(S_t, \bold{w})$
+    - $G_t$ is *unbiased*, but *noisy* sample of true value
+  - Temporal Difference Value Function Approximation: $\Delta \bold{w} = \alpha (R_{t+1} + \gamma \hat{v}(S_{t+1}, \bold{w}) - \hat{v}(S_t, \bold{w})) \nabla_{\bold{w}} \hat{v}(S_t, \bold{w})$
+    - $R_{t+1} + \gamma \hat{v}(S_{t+1}, \bold{w})$ is *biased* estimate of true value since it is drawn from previous estimate
+    - The gradient ascent update is an example of **semi-gradient** learning
+- The model-free control algorithms are *also* similar - approximate $q$
+  - MC: $\Delta \bold{w} = \alpha (G_t - \hat{q}(S_t, A_t, \bold{w})) \nabla_{\bold{w}} \hat{q} (S_t, A_t, \bold{w})$
+  - Sarsa: $\Delta \bold{w} = \alpha (R_{t+1} + \gamma \hat{q}(S_{t+1}, A_{t+1}, \bold{w}) - \hat{q}(S_t, A_t, \bold{w})) \nabla_{\bold{w}} \hat{q} (S_t, A_t, \bold{w})$
+  - Q-Learning: $\Delta \bold{w} = \alpha (R_{t+1} + \gamma \max_a \hat{q}(S_{t+1}, a, \bold{w}) - \hat{q}(S_t, A_t, \bold{w})) \nabla_{\bold{w}} \hat{q} (S_t, A_t, \bold{w})$
+- Linear Least-Squares Prediction Algorithms:
+  - LSMC: $0 = \sum_{t=1}^T \alpha(G_t - \hat{v}(S_t, \bold{w}))\bold{x}(S_t)$
+    - $\bold{w} = (\sum_{t=1}^T \bold{x}(S_t) \bold{x}(S_t)^T)^{-1} \sum_{t=1}^T \bold{x}(S_t)G_t$
+  - LSTD: $0 = \sum_{t=1}^T \alpha(R_{t+1} + \gamma \hat{v}(S_{t+1}, \bold{w}) - \hat{v}(S_t, \bold{w}))\bold{x}(S_t)$
+    - $\bold{w} = (\sum_{t=1}^T \bold{x}(S_t) \bold{x}(S_t)^T - \gamma \bold{x}(S_{t+1}))^{-1} \sum_{t=1}^T \bold{x}(S_t)R_{t+1}$
+  - LSDQ: $0 = \sum_{t=1}^T \alpha(R_{t+1} + \gamma \hat{q} (S_{t+1}, \pi (S_{t+1}), \bold{w}) - \hat{q} (S_t, A_t, \bold{w}))\bold{x} (S_t, A_t)$
+    - $\bold{w} = (\sum_{t=1}^T \bold{x} (S_t, A_t)(\bold{x} (S_t, A_t) - \gamma \bold{x} (S_{t+1}, \pi (S_{t+1})))^T)^{-1} \sum_{t=1}^T \bold{x} (S_t, A_t) R_{t+1}$
+    - Sample $S_t, A_t, R_{t+1}, S_{t+1}$ from old policy to generate an experience replay
+- Deep Q-Learning: Standard Q-Learning approach, *however*, incorporates (1) **Experience replay** to address correlation between samples and (2) **Fixed Q targets** to handle non-stationary targets
+  - Experience Replay: Store $(s_t, a_t, r_t, s_{t+1})$ suples in replay memory, and then sample an experience tuple (or batch) from this memory to compute the target value and prediction used to perform gradient descent
+  - Fixed Targets: Use $\bold{w^-}$ as the set of weights used in the *target* and $\bold{w}$ as the set of weights being updated. Periodically adjust $\bold{w^-} \leftarrow \bold{w}$ (frequency is hyperparameter)
+    - $\Delta \bold{w} = \alpha (r + \gamma \max_a \hat{Q}(s', a', \bold{w^-}) - \hat{Q}(s, a, \bold{w}))\nabla_{\bold{w}} \hat{Q}(s, a, \bold{w})$
+  - Some improvements: **Double DQN**: use *two networks*, where one performs the action selection and another creates the target value ($\argmax \hat{Q}$ term); **Dueling DQN**: branch the same network where one branch generates $V(s)$ and the other generates $A(s, a)$ so that ($Q(s, a) = A(s, a) + V(s)$) - the goal is to encourage learning which states are valuable without needing to learn the effect of action at each state; **Prioritized Experience Replay**: Prioritize experiences where there is a big difference between prediction and TD target (can use a priority queue)
+- Some issues that can lead to instability in training - **function approximators**, **bootstrapping**, and **off-policy training**
+- Batch-based methods are often used for training - this is more sample-efficient
+# Policy Optimization I: Policy Gradient and Actor-Critic
+- Parameterize and optimize policy directly
+  - Discrete Policy (**Softmax**): $\pi_\theta (a | s) = \frac{\exp (\phi(s, a)^{T} \theta)}{\sum_{a'} \exp (\phi(s, a')^T \theta)}$
+    - $\nabla_\theta \log \pi_\theta (a|s) = \phi(s,a) - \mathbb{E}_{\pi_\theta}[\phi(s, .)]$
+  - Continuous Policy (**Gaussian)**: $\mu (s) = \phi(s)^T \theta$
+    - $a \sim \mathcal{N} (\mu (s), \sigma^2)$
+    - $\nabla \theta \log(\pi_\theta) (a |s) = \frac{(a - \mu(s)) \phi(s)}{\sigma^2}$
+- Gradient-Free Methods:
+  - **Evolution Strategy**: Perturb $\theta$ with multiple noises and execute rollouts to compute $J(\theta)$ for each; set new $\theta$ to weighted sum based on scores ($\theta_{t+1} \leftarrow \theta_t + \alpha \frac{1}{n \delta} \sum_{i=1}^n J(\theta_i) \epsilon_i$)
+  - **Cross-Entropy Method**: Sample $\theta$ from distribution, execute rollouts, and then update $\mu$ (distribution parameter) to maximize the likelihood of the top n% of $\theta$ generated based on score ($\mu^{(i+1)} = \argmax_\mu \sum_{k \in \hat{C}} \log P_\mu (\theta^{(k)})$)
+- Log Ratio Trick: $\nabla_\theta \pi_\theta (a|s) = \pi_\theta (a|s) \frac{\nabla_\theta \pi_\theta (a|s)}{\pi_\theta (a|s)} = \pi_\theta (a|s) \nabla_\theta \log \pi_\theta (a|s)$
+- The objective of policy gradient is to maximize the reward from a trajectory sampled from the policy: $J(\theta) = \mathbb{E}_{\pi_\theta}[\sum_{t=0}^T R(s_t, a_t)] = \sum_\tau P(\tau ; \theta) R(\tau)$ where $\tau = (s_0, a_0, r_1, ..., s_{T-1}, a_{T-1}, r_T, s_T) \sim (\pi_\theta, P(s_{t+1} | s_t, a_t))$
+  - To get this in a differentiable form:
+    - $\nabla_\theta J(\theta) = \nabla_\theta \sum_\tau P(\tau ; \theta) R(\tau) = \sum_\tau P(\tau; \theta) R(\tau) \nabla_\theta \log P(\tau; \theta)$ (**log ratio trick**)
+    - $\approx \frac{1}{m}\sum_{i=1}^m R(\tau_i) \nabla_\theta \log P(\tau_i; \theta)$ (**estimate of expectation over $\tau$**)
+    - $= \frac{1}{m}\sum_{i=1}^m R(\tau_i) \nabla_\theta \log [\mu(s_0) \prod_{t=0}^{T-1} \pi_\theta (a_t | s_t) p(s_{t+1} | s_t, a_t)]$ (**decomposition of $P$**)
+    - $= \frac{1}{m}\sum_{i=1}^m R(\tau_i) \nabla_\theta [\log \mu(s_0) + \sum_{t=0}^{T-1} \log \pi_\theta (a_t | s_t) + \log p(s_{t+1} | s_t, a_t)]$ (**can eliminate transition dynamics since they are not a function of $\theta$**)
+    - $\nabla_\theta J(\theta) \approx \frac{1}{m} \sum_{i=1}^m R(\tau_i) \sum_{t=0}^{T-1} \nabla_\theta \log \pi_\theta (a^i_t | s^i_t)$
+      - This is shifting the distribution ($\pi$) through parameter $\theta$ in a way to ensure future samples achieve higher scores based on the reward function - this is akin to **weighted maximum likelihood**
+- **Temporal Causality**: Policy should not affect rewards from the past, so only sum *future rewards*
+  - $\nabla_\theta J(\theta) = \mathbb{E}_\tau [\sum_{t=0}^{T-1} \nabla_\theta \log \pi_\theta (a_t | s_t) \sum_{t' = t}^{T-1} r_t'] \approx \frac{1}{m} \sum_{i=1}^m \sum_{t = 0}^{T-1} G_t^{(i)} \cdot \nabla_\theta \log \pi_\theta (a^i_t | s^i _t)$
+- **Baselines**: Reduce variance by subtracting a baseline
+  - $\nabla_\theta J(\theta) = \mathbb{E}_\tau [\sum_{t=0}^{T-1} (G_t - b) \cdot \nabla_\theta \log \pi_\theta (a_t | s_t)]$ where $b = \mathbb{E} [r_t + r_{t+1} + ... + r_{T-1}]$ (expected return)
+- **REINFORCE**: On-policy algorithm
+  - Generate episode following $\pi(\theta)$
+  - For each step of episode:
+    - Let $G$ be the return from step $t$ onwards
+    - $\theta \leftarrow \theta + \alpha \gamma^t G \nabla_\theta \log \pi (A_t | S_t, \theta)$
+- **Actor-Critic**: Instead of using $G_t$, which is sampled from Monte Carlo, use a critic to estimate the action-value function. This implies *two sets of parameters* - one for the actor (policy function), and one for the critic (value function)
+  - $\nabla_\theta J(\theta) = \mathbb{E}_{\pi_\theta} [\sum_{t=0}^{T-1} Q_w (s_t, a_t) \cdot \nabla_\theta \log \pi_\theta (a_t | s_t)]$
+  - Critic parameters can be updated using any prior approach (Monte Carlo, TD, etc.)
+  - Baseline can be applied here as well - the state-value function can be used to form the baseline (**advantage function**) $A^{\pi, \gamma}(s,a) = Q^{\pi, \gamma}(s, a) - V^{\pi, \gamma}(s)$
+    - Rather than maintain *two sets of parameters* for just the critic, it can be recognized that the TD error is an unbiased estimate of the advantage function:
+    - $\mathbb{E}_{\pi_\theta}[\delta^{\pi_\theta} | s, a] = \mathbb{E}_{\pi_\theta} [r + \gamma V^{\pi_\theta}(s') |s, a] - V^{\pi_\theta}(s) = Q^{\pi_\theta}(s, a) - V^{\pi_\theta}(s) = A^{\pi_\theta}(s,a)$
+    - $\nabla_\theta J(\theta) = \mathbb{E}_{\pi_\theta}[\nabla_\theta \log \pi_\theta (a |s)\delta^{\pi_\theta}]$, where $\delta_v = r + \gamma V_{\kappa}(s') - V_\kappa (s)$
+      - Just need to maintain weights for $V$, which can be updated using MC, TD, etc. (e.g. $\Delta \kappa = \alpha (G - V_\kappa (s)) \psi (s)$)
