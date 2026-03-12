@@ -153,3 +153,72 @@
     - $\mathbb{E}_{\pi_\theta}[\delta^{\pi_\theta} | s, a] = \mathbb{E}_{\pi_\theta} [r + \gamma V^{\pi_\theta}(s') |s, a] - V^{\pi_\theta}(s) = Q^{\pi_\theta}(s, a) - V^{\pi_\theta}(s) = A^{\pi_\theta}(s,a)$
     - $\nabla_\theta J(\theta) = \mathbb{E}_{\pi_\theta}[\nabla_\theta \log \pi_\theta (a |s)\delta^{\pi_\theta}]$, where $\delta_v = r + \gamma V_{\kappa}(s') - V_\kappa (s)$
       - Just need to maintain weights for $V$, which can be updated using MC, TD, etc. (e.g. $\Delta \kappa = \alpha (G - V_\kappa (s)) \psi (s)$)
+# Policy Optimization II
+- Turn Policy Gradient into an *off-policy* algorithm via **importance sampling**, where the *old policy* is sampled from (using replay buffer) rather than the current one; must incorporate a constraint to limit excessive changes between subsequent policies (creates a **trust region**)
+  - $J(\theta) = \mathbb{E}_{s, a \sim \pi_\theta}[r(s, a)] = \mathbb{E}_{s, a \sim \hat{\pi}}[\frac{\pi_\theta(s,a)}{\hat{\pi}(s,a)}r(s,a)]$ subject to $KL(\pi_{\theta_{\text{old}}} ||\pi_\theta) = \sum_a \pi_{\theta_{\text{old}}}(a|s) \log \frac{\pi_\theta (a|s)}{\pi_{\theta_{\text{old}}}(a|s)} \leq \delta$
+- **Natural Policy Gradient**: Use second-order optimization methods to solve aforementioned constrained objective
+  - Collect trajectories $\mathcal{D}_k$ on policy $\pi_k = \pi(\theta_k)$
+  - Estimate advantages $\hat{A}_t^{\pi_k}$ using any method
+  - Estimate $g = \nabla_\theta J_{\theta_t}(\theta)$ and $H = \nabla^2_\theta KL(\theta || \theta_t)$, which can also be expressed as $F=\mathbb{E}_{\pi_\theta(s,a)}[\nabla \log \pi_\theta (s, a) \nabla \log \pi_\theta (s, a)^T]$
+  - Compute update: $\theta_{k+1}=\theta_k + \sqrt{\frac{2\delta}{\hat{g}_k^T \hat{H}_k^{-1}\hat{g}_k}}\hat{H}_k^{-1}\hat{g}_k$
+  - **Disadvantage**: $H$ and $H^{-1}$ can be very difficult to compute
+- **Trust Region Policy Optimization**: Estimates $x=H^{-1}g$ by solving $Hx=g$, which is equivalent to solving $\min_x \frac{1}{2}x^T H x - g^Tx$ - do this via conjugate gradient method
+  - **Disadvantage**: Computing $H$ is still expensive, and requires a large batch of rollouts to properly approximate $H$
+- **Proximal Policy Optimization (PPO) with Adaptive KL Penalty**: Incorporate the KL constraint into the objective directly
+  - Collect set of partial trajectories $\mathcal{D}_k$ on $\pi_k = \pi(\theta_k)$
+  - Estimate advantages $\hat{A}_t^{\pi_k}$ using any method
+  - $\theta_{k+1} = \argmax_\theta \mathbb{E}_{\pi_{\theta_{\text{old}}}}[\frac{\pi_\theta (a_t | s_t)}{\pi_{\theta_{\text{old}}}(a_t | s_t)}A_t] - \beta \mathbb{E}_{\pi_{\theta_{\text{old}}}}[KL[\pi_{\theta_{\text{old}}}, \pi_\theta]]$
+    - Using SGD
+  - if $D_{KL}(\theta_{k+1}||\theta_k) \geq 1.5\delta$ then $\beta_{k+1} = 2\beta_K$ else $\beta_{k+1} = \beta_k / 2$
+    - If there are significant differences, then have a higher divergence penalty
+- **PPO with Clipping**: Axe using KL divergence and instead clip the advantage function directly to avoid too large of changes in probability ratio $r_t(\theta) = \frac{\pi_\theta (a_t | s_t)}{\pi_{\theta_{\text{old}}}(a_t | s_t)}$
+  - $L_t (\theta) = \min(r_t (\theta) \hat{A}_t, \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon) \hat{A}_t)$
+- **Deep Deterministic Policy Gradient (DDPG)**: Extend DQN to *continuous* action space. Still utilize replay buffer and target network logic as with DQN
+  - $a^* = \argmax_a Q^* (s, a) \approx \argmax_\theta Q_\phi (s, \mu_\theta(s))$
+    - Train policy $\mu_\theta(s)$ to give action that maximizes $Q_\phi(s,a)$
+  - **Q-Function Update**: $\min \mathbb{E}_{s, r, s', d \sim \mathcal{D}}[(r + \gamma Q_{\phi_{\text{targ}}}(s', \mu_{\theta_{\text{targ}}}(s')) - Q_\phi (s,a))^2]$
+  - **Policy Update**: $\max_\theta \mathbb{E}_{s \sim \mathcal{D}}[Q_\phi (s, \mu_\theta(s))]$
+  - **Disadvantage**: Tends to *dramatically overestimate Q-values*
+- **Twin Delayed DDPG (TD3)**: Addresses issues with DDPG
+  - **Double-Q**: Learn two Q functions, $Q_{\phi_1}$ and $Q_{\phi_2}$ using the same aforementioned loss function, but have the target be the smaller of the two: $y(r, s') = r + \gamma \min_{i=1,2} Q_{\phi_{i, targ}} (s', a_{TD3}(s'))$
+    - Note that there are still *two target networks* for each Q function
+  - **Target Policy Smoothing**: $a_{TD3}(s') = \text{clip}(\mu_{\theta, \text{targ}}(s') + \text{clip}(\epsilon, -c, c), a_{low}, a_{high}), \epsilon \sim \mathcal{N}(0, \sigma)$
+    - This regularizes by avoiding incorrect sharp peak for some actions output by the policy
+- **Soft Actor-Critic (SAC)**: Incorporates **entropy regularization** to ensure there is a tradeoff between expected return and entropy in the policy - this encourages exploration
+  - Q-Function Update:
+    - $L(\phi_i, \mathcal{D}) = \mathbb{E}[(Q_\phi(s,a) - y(r, s', d))^2]$
+    - $y(r, s') = r + \gamma(\min_{j=1,2} Q_{\phi_{targ, j}}(s', \hat{a}') - \alpha \log \pi_\theta (\hat{a}' |s'))$
+    - $\hat{a}' \sim \pi_\theta(\cdot | s')$
+      - No need to reparameterize here because the gradient is for $\phi$, not $\theta$
+  - Policy Update:
+    - $\max_\theta E_{s \sim \mathcal{D}, \epsilon \sim \mathcal{N}} [\min_{j=1,2} Q_{\phi_j}(s, \hat{a}_\theta (s, \epsilon)) - \alpha \log \pi_\theta (\hat{a}_\theta (s, \epsilon) | s)]$
+    - To avoid the dependency of sampling from the policy in the objective, we used a **reparameterization trick** to instead sample over noise
+      - $\hat{a}_\theta(s, \epsilon) = \tanh(\mu_\theta(s) + \sigma_\theta (s) \odot \epsilon), \epsilon \sim \mathcal{N}(0, I)$
+# Model-Based Reinforcement Learning
+- Learn a **model** that can be used to *plan* a better policy - this is much more *sample efficient*, but can be difficult to learn since now there are two sources of error
+  - Model learns to predict $S_{t+1}$ and $R_{t+1}$ in a supervised fashion from collected trajectories
+  - Planning: Sample experiences from the model and then use model-free reinforcement learning algorithms (Monte Carlo, Sarsa, Q-Learning) to the sampled experiences to learn
+- **Dyna-Q** (Model-Based Value Optimization):
+  - Execute action $A$ based on policy (e.g. $\epsilon$-greedy), and observe resultant $R$ and $S'$
+  - $Q(S,A) \leftarrow Q(S,A) + \alpha [R + \gamma \max_a Q(S', a) - Q(S, A)]$
+  - Update model from collected $R$ and $S'$ (e.g. regression)
+  - Repeat $n$ times:
+    - $S \leftarrow \text{random previously observed state}$; $\A \leftarrow \text{random action previously taken in S}$
+    - $R, S' \leftarrow \text{Model}(S,A)$
+    - $Q(S,A) \leftarrow Q(S,A) + \alpha [R + \gamma \max_a Q(S' ,a) - Q(S,A)]$
+- **Model-Based Policy Optimization**:
+  - **Linear-Quadratic Regulator** methods can be used to solve $\min_{a_i, ..., a_t}\sum_{t=1}^T c(s_t, a_t)$ subject to $s_t = f(s_{t-1}, a_{t-1})$, where $c$ is the cost function (can use *negative reward*) and $s_t$ is the transition dynamics
+  - Algorithm (Planning Incorporated):
+    - Run base policy $\pi_0(a_t | s_t)$ to collect $\mathcal{D} = \{(s, a, s')_i\}$
+    - Loop every step:
+      - Loop every N steps:
+        - Learn dynamics model $s' = p(s, a)$ to minimize $\sum_i ||f(s_i, a_i) - s'_i||^2$
+      - Plan through $f(s, a)$ to choose actions (use LQR method)
+      - Execute first planned action and observe resulting state
+      - Append $(s, a, s')$ to dataset $\mathcal{D}$
+  - Algorithm (Learning and Planning Incorporated):
+    - Run base policy $\pi_0(a_t | s_t)$ to collect $\mathcal{D} = \{(s, a, s')_i\}$
+    - Loop:
+      - Learn dynamics model $f(s, a)$ to minimize $\sum_i ||f(s_i, a_i) - s'_i||^2$
+      - Backpropagate through $f(s, a)$ into policy to optimize $\pi_\theta(a_t | s_t)$
+      - Run $\pi_\theta (a_t | s_t)$, appending visited $(s, a, s')$ to $\mathcal{D}$
