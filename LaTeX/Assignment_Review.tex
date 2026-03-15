@@ -1,0 +1,417 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass{article}
+\usepackage[margin=0.1in,top=0.1in,bottom=0.1in]{geometry}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\usepackage{ragged2e}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines=true,breakanywhere=true,breaksymbol=}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{\CodeFontSize\setlength{\topsep}{\CodeBlockSkip}\setlength{\partopsep}{0pt}}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% --------- Compression knobs (tune these values) ---------
+\usepackage{multicol}
+\newcommand{\BodyFontSize}{\fontsize{5.2}{6.2}\selectfont}
+\newcommand{\SectionFontStyle}{\fontsize{6.4}{7.2}\selectfont\bfseries}
+\newcommand{\CodeFontSize}{\fontsize{4.8}{5.6}\selectfont}
+\newcommand{\NumColumns}{3}  % <-- change number of columns here
+\newif\ifUseRaggedRight
+\UseRaggedRighttrue
+\newlength{\SectionBeforeSkip}
+\newlength{\SectionAfterSkip}
+\newlength{\CodeBlockSkip}
+\setlength{\columnsep}{8pt}
+\setlength{\SectionBeforeSkip}{0.35ex plus 0.1ex minus 0.05ex}
+\setlength{\SectionAfterSkip}{0.2ex plus 0.05ex}
+\setlength{\CodeBlockSkip}{1pt}
+% Math spacing knobs
+\thinmuskip=1mu
+\medmuskip=1.5mu plus 0.5mu minus 0.5mu
+\thickmuskip=2mu plus 0.5mu minus 0.5mu
+% ----------------------------------------------------------
+
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}{\SectionBeforeSkip}{\SectionAfterSkip}{\normalfont\SectionFontStyle}}
+\makeatother
+
+\ifUseRaggedRight
+  \AtBeginDocument{\RaggedRight}
+\fi
+
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+\BodyFontSize
+\begin{multicols*}{\NumColumns}
+
+\section{Assignment 1}\label{assignment-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Gym Environment Semantics}
+\NormalTok{env }\OperatorTok{=}\NormalTok{ gym.make(env\_name)}
+\NormalTok{obs, info }\OperatorTok{=}\NormalTok{ env.reset(seed}\OperatorTok{=}\NormalTok{seed)}
+\NormalTok{action }\OperatorTok{=}\NormalTok{ policy(obs)}
+\NormalTok{observation, reward, terminated, truncated, info }\OperatorTok{=}\NormalTok{ env.step(action)}
+\NormalTok{done }\OperatorTok{=}\NormalTok{ terminated }\KeywordTok{or}\NormalTok{ truncated}
+\NormalTok{transitions }\OperatorTok{=} \VariableTok{self}\NormalTok{.env.unwrapped.P[state][act]}
+\ControlFlowTok{for}\NormalTok{ prob, next\_state, reward, done }\KeywordTok{in}\NormalTok{ transitions:}
+\NormalTok{  ...}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Policy Iteration: Note that train() is updating value and then policy}
+\NormalTok{random\_mapping }\OperatorTok{=}\NormalTok{ np.random.randint(}\DecValTok{0}\NormalTok{, }\VariableTok{self}\NormalTok{.action\_dim, size}\OperatorTok{=}\NormalTok{(}\VariableTok{self}\NormalTok{.obs\_dim))}
+\VariableTok{self}\NormalTok{.policy: Callable }\OperatorTok{=} \KeywordTok{lambda}\NormalTok{ obs: random\_mapping[obs]}
+\CommentTok{\# Update Value Function}
+\ControlFlowTok{while} \VariableTok{True}\NormalTok{:}
+\NormalTok{    old\_table }\OperatorTok{=} \VariableTok{self}\NormalTok{.value\_table.copy()}
+    \ControlFlowTok{for}\NormalTok{ state }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\VariableTok{self}\NormalTok{.obs\_dim):}
+\NormalTok{      action }\OperatorTok{=} \VariableTok{self}\NormalTok{.policy(state)}
+\NormalTok{      state\_value }\OperatorTok{=} \DecValTok{0}
+      \ControlFlowTok{for}\NormalTok{ transition }\KeywordTok{in} \VariableTok{self}\NormalTok{.\_get\_transitions(state, action):}
+        \CommentTok{\# Unpack transitions (omitted here)}
+        \ControlFlowTok{if}\NormalTok{ done:}
+\NormalTok{          state\_value }\OperatorTok{+=}\NormalTok{ prob }\OperatorTok{*}\NormalTok{ reward}
+        \ControlFlowTok{else}\NormalTok{:}
+\NormalTok{          state\_value }\OperatorTok{+=}\NormalTok{ prob }\OperatorTok{*}\NormalTok{ (reward }\OperatorTok{+} \VariableTok{self}\NormalTok{.gamma }\OperatorTok{*}\NormalTok{ old\_table[next\_state])}
+      \VariableTok{self}\NormalTok{.value\_table[state] }\OperatorTok{=}\NormalTok{ state\_value}
+    \ControlFlowTok{if}\NormalTok{ np.}\BuiltInTok{abs}\NormalTok{(old\_table }\OperatorTok{{-}} \VariableTok{self}\NormalTok{.value\_table).}\BuiltInTok{sum}\NormalTok{() }\OperatorTok{\textless{}} \VariableTok{self}\NormalTok{.eps:}
+      \ControlFlowTok{break}
+\CommentTok{\# Update Policy }
+\NormalTok{policy\_table }\OperatorTok{=}\NormalTok{ np.zeroes([}\VariableTok{self}\NormalTok{.obs\_dim, ], dtype}\OperatorTok{=}\BuiltInTok{int}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{ state }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\VariableTok{self}\NormalTok{.obs\_dim):}
+\NormalTok{  state\_action\_values }\OperatorTok{=}\NormalTok{ [}\DecValTok{0}\NormalTok{] }\OperatorTok{*} \VariableTok{self}\NormalTok{.action\_dim}
+  \ControlFlowTok{for}\NormalTok{ action }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\VariableTok{self}\NormalTok{.action\_dim):}
+\NormalTok{    value }\OperatorTok{=} \DecValTok{0} 
+    \ControlFlowTok{for}\NormalTok{ transition }\KeywordTok{in} \VariableTok{self}\NormalTok{.\_get\_transitions(state, action):}
+      \CommentTok{\# Omit unpacking logic here}
+      \ControlFlowTok{if}\NormalTok{ done:}
+\NormalTok{        value }\OperatorTok{+=}\NormalTok{ prob }\OperatorTok{*}\NormalTok{ reward}
+      \ControlFlowTok{else}\NormalTok{:}
+\NormalTok{        value }\OperatorTok{+=}\NormalTok{ prob }\OperatorTok{*}\NormalTok{ (reward }\OperatorTok{+} \VariableTok{self}\NormalTok{.gamma }\OperatorTok{*} \VariableTok{self}\NormalTok{.value\_table[next\_state])}
+\NormalTok{    state\_action\_values[action] }\OperatorTok{=}\NormalTok{ value}
+\NormalTok{  policy\_table[state] }\OperatorTok{=}\NormalTok{ np.argmax(state\_value)}
+\VariableTok{self}\NormalTok{.policy }\OperatorTok{=} \KeywordTok{lambda}\NormalTok{ obs: policy\_table[obs]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Value Iteration: Note that training is just updating value function}
+\CommentTok{\# Update Value Function}
+\NormalTok{old\_table }\OperatorTok{=} \VariableTok{self}\NormalTok{.value\_table.copy()}
+\ControlFlowTok{for}\NormalTok{ state }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\VariableTok{self}\NormalTok{.obs\_dim):}
+\NormalTok{  state\_value }\OperatorTok{=} \DecValTok{0}
+\NormalTok{  state\_action\_values }\OperatorTok{=}\NormalTok{ [}\DecValTok{0}\NormalTok{] }\OperatorTok{*} \VariableTok{self}\NormalTok{.action\_dim}
+  \ControlFlowTok{for}\NormalTok{ action }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\VariableTok{self}\NormalTok{.action\_dim):}
+\NormalTok{    value }\OperatorTok{=} \DecValTok{0}
+    \ControlFlowTok{for}\NormalTok{ transition }\KeywordTok{in} \VariableTok{self}\NormalTok{.\_get\_transitions(state, action):}
+      \CommentTok{\# Omit unpacking logic here}
+      \ControlFlowTok{if}\NormalTok{ done:}
+\NormalTok{        value }\OperatorTok{+=}\NormalTok{ prob }\OperatorTok{*}\NormalTok{ reward}
+      \ControlFlowTok{else}\NormalTok{:}
+\NormalTok{          value }\OperatorTok{+=}\NormalTok{ prob }\OperatorTok{*}\NormalTok{ (reward }\OperatorTok{+} \VariableTok{self}\NormalTok{.gamma }\OperatorTok{*}\NormalTok{ old\_table[next\_state])}
+\NormalTok{      state\_action\_values[action] }\OperatorTok{=}\NormalTok{ value}
+\NormalTok{    state\_action\_valuesp[action] }\OperatorTok{=}\NormalTok{ value}
+  \VariableTok{self}\NormalTok{.value\_table[state] }\OperatorTok{=} \BuiltInTok{max}\NormalTok{(state\_action\_values)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Assignment 2}\label{assignment-2}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Q{-}Learning}
+\CommentTok{\# Epsilon Greedy Policy}
+\ControlFlowTok{if}\NormalTok{ np.random.uniform(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{) }\OperatorTok{\textless{}} \VariableTok{self}\NormalTok{.eps:}
+\NormalTok{  action }\OperatorTok{=} \VariableTok{self}\NormalTok{.env.action\_space.sample()}
+\ControlFlowTok{else}\NormalTok{:}
+\NormalTok{  action }\OperatorTok{=}\NormalTok{ np.argmax(}\VariableTok{self}\NormalTok{.table[obs])}
+\ControlFlowTok{return}\NormalTok{ action}
+\CommentTok{\# Training}
+\ControlFlowTok{for}\NormalTok{ t }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\VariableTok{self}\NormalTok{.max\_episode\_length):}
+\NormalTok{  act }\OperatorTok{=} \VariableTok{self}\NormalTok{.compute\_action(obs) }\CommentTok{\# Epsilon{-}Greedy}
+\NormalTok{  next\_obs, reward, terminated, truncated, info }\OperatorTok{=} \VariableTok{self}\NormalTok{.env.step(act)}
+\NormalTok{  done }\OperatorTok{=}\NormalTok{ terminated }\KeywordTok{or}\NormalTok{ truncated}
+\NormalTok{  td\_error }\OperatorTok{=}\NormalTok{ reward }\OperatorTok{+} \VariableTok{self}\NormalTok{.gamma }\OperatorTok{*}\NormalTok{ np.}\BuiltInTok{max}\NormalTok{(}\VariableTok{self}\NormalTok{.table[next\_obs]) }\OperatorTok{{-}} \VariableTok{self}\NormalTok{.table[obs][act] }
+\NormalTok{  new\_value }\OperatorTok{=} \VariableTok{self}\NormalTok{.table[obs][act] }\OperatorTok{+} \VariableTok{self}\NormalTok{.learning\_rate }\OperatorTok{*}\NormalTok{ td\_error}
+  \VariableTok{self}\NormalTok{.table[obs][act] }\OperatorTok{=}\NormalTok{ new\_value}
+\NormalTok{  obs }\OperatorTok{=}\NormalTok{ next\_obs}
+  \ControlFlowTok{if}\NormalTok{ done:}
+    \ControlFlowTok{break}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# DQN}
+\CommentTok{\# ExperienceReplayMemory is a dequeue with push and sample methods}
+\CommentTok{\# Pytorch Model Syntax}
+\VariableTok{self}\NormalTok{.action\_value }\OperatorTok{=}\NormalTok{ nn.Sequential(}
+\NormalTok{  nn.Linear(num\_inputs, hidden\_units),}
+\NormalTok{  nn.ReLU(),}
+\NormalTok{  nn.Linear(hidden\_units, hidden\_units),}
+\NormalTok{  nn.ReLU(),}
+\NormalTok{  nn.Linear(hidden\_units, num\_outputs)}
+\NormalTok{)}
+\CommentTok{\# DQN Setup}
+\CommentTok{\# Set both network and target networks to eval mode (omitted here)}
+\VariableTok{self}\NormalTok{.network }\OperatorTok{=}\NormalTok{ PytorchModel(}\VariableTok{self}\NormalTok{.obs\_dim, }\VariableTok{self}\NormalTok{.act\_dim, }\VariableTok{self}\NormalTok{.hidden\_dim)}
+\VariableTok{self}\NormalTok{.target\_network }\OperatorTok{=}\NormalTok{ PytorchModel(}\VariableTok{self}\NormalTok{.obs\_dim, }\VariableTok{self}\NormalTok{.act\_dim)}
+\VariableTok{self}\NormalTok{.target\_network.load\_state\_dict(}\VariableTok{self}\NormalTok{.network.state\_dict())}
+\VariableTok{self}\NormalTok{.loss }\OperatorTok{=}\NormalTok{ nn.MSELoss()}
+\CommentTok{\# Training Function Snippets}
+\NormalTok{act }\OperatorTok{=} \VariableTok{self}\NormalTok{.compute\_action(processed\_obs) }\CommentTok{\# Epsilon{-}Greedy}
+\ControlFlowTok{for}\NormalTok{ t }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\VariableTok{self}\NormalTok{.max\_episode\_length):}
+\NormalTok{  next\_obs, reward, truncated, terminated, truncated, info }\OperatorTok{=} \VariableTok{self}\NormalTok{.env.step(act)}
+\NormalTok{  done }\OperatorTok{=}\NormalTok{ terminated }\KeywordTok{or}\NormalTok{ truncated}
+  \VariableTok{self}\NormalTok{.memory.push((processed\_obs, act, reward, next\_processed\_obs, done))}
+\NormalTok{  act }\OperatorTok{=} \VariableTok{self}\NormalTok{.compute\_action(next\_processed\_obs)}
+\NormalTok{  batch }\OperatorTok{=} \VariableTok{self}\NormalTok{.memory.sample(}\VariableTok{self}\NormalTok{.batch\_size)}
+  \CommentTok{\# Convert batches to tensors using np.stack and to\_tensor {-} omitted}
+  \ControlFlowTok{with}\NormalTok{ torch.no\_grad():}
+\NormalTok{    Q\_t\_plus\_one }\OperatorTok{=} \VariableTok{self}\NormalTok{.target\_network(next\_state\_batch).}\BuiltInTok{max}\NormalTok{(dim}\OperatorTok{=}\DecValTok{1}\NormalTok{)[}\DecValTok{0}\NormalTok{] }
+\NormalTok{    Q\_objective }\OperatorTok{=}\NormalTok{ reward\_batch.squeeze(}\DecValTok{0}\NormalTok{) }\OperatorTok{+}\NormalTok{ (}\DecValTok{1} \OperatorTok{{-}}\NormalTok{ done\_batch.squeeze(}\DecValTok{0}\NormalTok{)) }\OperatorTok{*} \VariableTok{self}\NormalTok{.gamma }\OperatorTok{*}\NormalTok{ Q\_t\_plus\_one}
+  
+  \VariableTok{self}\NormalTok{.network.train()}
+\NormalTok{  Q\_t }\OperatorTok{=} \VariableTok{self}\NormalTok{.network(state\_batch).gather(}\DecValTok{1}\NormalTok{, action\_batch.}\BuiltInTok{long}\NormalTok{().squeeze(}\DecValTok{0}\NormalTok{).unsqueeze(}\DecValTok{1}\NormalTok{)).squeeze(}\DecValTok{1}\NormalTok{)}
+  \VariableTok{self}\NormalTok{.optimizer.zero\_grad()}
+\NormalTok{  loss }\OperatorTok{=} \VariableTok{self}\NormalTok{.loss(Q\_t, Q\_objective)}
+\NormalTok{  loss.backward()}
+  \VariableTok{self}\NormalTok{.optimizer.step()}
+  \VariableTok{self}\NormalTok{.network.}\BuiltInTok{eval}\NormalTok{()}
+
+  \ControlFlowTok{if}\NormalTok{ (update\_weights): }\CommentTok{\# omit log}
+    \VariableTok{self}\NormalTok{.target\_network.load\_state\_dict(}\VariableTok{self}\NormalTok{.network.state\_dict())}
+    \VariableTok{self}\NormalTok{.target\_network.}\BuiltInTok{eval}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Policy Gradient Network Snippets}
+\KeywordTok{def}\NormalTok{ forward(}\VariableTok{self}\NormalTok{, obs):}
+\NormalTok{  logit }\OperatorTok{=} \VariableTok{self}\NormalTok{.network(obs)}
+\NormalTok{  dist }\OperatorTok{=}\NormalTok{ torch.distributions.Categorical(logits}\OperatorTok{=}\NormalTok{logit)}
+\NormalTok{  action }\OperatorTok{=}\NormalTok{ dist.sample()}
+  \ControlFlowTok{return}\NormalTok{ action}
+\KeywordTok{def}\NormalTok{ log\_prob(}\VariableTok{self}\NormalTok{, obs, act):}
+\NormalTok{  logit }\OperatorTok{=} \VariableTok{self}\NormalTok{.network(obs)}
+\NormalTok{  dist }\OperatorTok{=}\NormalTok{ torch.distributions.Categorical(logits}\OperatorTok{=}\NormalTok{logit)}
+\NormalTok{  log\_prob }\OperatorTok{=}\NormalTok{ dist.log\_prob(act)}
+  \ControlFlowTok{return}\NormalTok{ log\_prob}
+\CommentTok{\# Update}
+\VariableTok{self}\NormalTok{.network.train()}
+\VariableTok{self}\NormalTok{.optimizer.zero\_grad()}
+\NormalTok{log\_probs }\OperatorTok{=} \VariableTok{self}\NormalTok{.compute\_log\_probs(flat\_obs, flat\_act)}
+\NormalTok{loss }\OperatorTok{=} \OperatorTok{{-}}\NormalTok{torch.mean(log\_probs }\OperatorTok{*}\NormalTok{ advantages)}
+\NormalTok{loss.backward()}
+\NormalTok{torch.nn.utils.clip\_grad\_norm\_(}\VariableTok{self}\NormalTok{.network.parameters(), }\VariableTok{self}\NormalTok{.config[}\StringTok{"clip\_gradient"}\NormalTok{])}
+\VariableTok{self}\NormalTok{.optimizer.step()}
+\VariableTok{self}\NormalTok{.network.}\BuiltInTok{eval}\NormalTok{()}
+\CommentTok{\# Sample collection logic }
+\ControlFlowTok{while}\NormalTok{ iter\_timesteps }\OperatorTok{\textless{}=} \VariableTok{self}\NormalTok{.config[}\StringTok{"train\_batch\_size"}\NormalTok{]}
+\NormalTok{  ...}
+  \ControlFlowTok{while} \VariableTok{True}\NormalTok{:}
+\NormalTok{    act }\OperatorTok{=} \VariableTok{self}\NormalTok{.compute\_actions(obs)}
+\NormalTok{    next\_obs, reward, terminated, truncated, step\_info }\OperatorTok{=} \VariableTok{self}\NormalTok{.env.step(act)}
+    \CommentTok{\# Append everything}
+\CommentTok{\# Sample Processing}
+\ControlFlowTok{for}\NormalTok{ reward\_list }\KeywordTok{in}\NormalTok{ samples[}\StringTok{"reward"}\NormalTok{]}
+\NormalTok{  ...}
+  \ControlFlowTok{for}\NormalTok{ t }\KeywordTok{in} \BuiltInTok{reversed}\NormalTok{(}\BuiltInTok{range}\NormalTok{(}\BuiltInTok{len}\NormalTok{(reward\_list))):}
+\NormalTok{    Q }\OperatorTok{=}\NormalTok{ reward\_list[t] }\OperatorTok{+} \VariableTok{self}\NormalTok{.config[}\StringTok{"gamma"}\NormalTok{] }\OperatorTok{*}\NormalTok{ Q}
+\NormalTok{    returns[t] }\OperatorTok{=}\NormalTok{ Q}
+\NormalTok{  values.append(returns) }\CommentTok{\# technically values are advantages here}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Assignment 3}\label{assignment-3}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# TD3 Actor (Continuous)}
+\KeywordTok{def}\NormalTok{ forward(}\VariableTok{self}\NormalTok{, state):}
+\NormalTok{  a }\OperatorTok{=}\NormalTok{ F.relu(}\VariableTok{self}\NormalTok{.l1(state))}
+\NormalTok{  a }\OperatorTok{=}\NormalTok{ F.relu(}\VariableTok{self}\NormalTok{.l2(a))}
+  \ControlFlowTok{return} \VariableTok{self}\NormalTok{.max\_action }\OperatorTok{*}\NormalTok{ torch.tanh(}\VariableTok{self}\NormalTok{.l3(a))}
+\CommentTok{\# TD3 Critic}
+\KeywordTok{def}\NormalTok{ forward(}\VariableTok{self}\NormalTok{, state, action):}
+\NormalTok{    sa }\OperatorTok{=}\NormalTok{ torch.cat([state, action], }\DecValTok{1}\NormalTok{)}
+\NormalTok{    q1 }\OperatorTok{=}\NormalTok{ F.relu(}\VariableTok{self}\NormalTok{.l1(sa))}
+\NormalTok{    q1 }\OperatorTok{=}\NormalTok{ F.relu(}\VariableTok{self}\NormalTok{.l2(q1))}
+\NormalTok{    q1 }\OperatorTok{=} \VariableTok{self}\NormalTok{.l3(q1)}
+\NormalTok{    q2 }\OperatorTok{=}\NormalTok{ F.relu(}\VariableTok{self}\NormalTok{.l4(sa))}
+\NormalTok{    q2 }\OperatorTok{=}\NormalTok{ F.relu(}\VariableTok{self}\NormalTok{.l5(q2))}
+\NormalTok{    q2 }\OperatorTok{=} \VariableTok{self}\NormalTok{.l6(q2)}
+    \ControlFlowTok{return}\NormalTok{ q1, q2}
+\CommentTok{\# TD3 Trainer Snippets (Actor, Actr Target, Critic, and Critic Targets)}
+\NormalTok{state, action, next\_state, reward, not\_done }\OperatorTok{=}\NormalTok{ replay\_buffer.sample(batch\_size)}
+\ControlFlowTok{with}\NormalTok{ torch.no\_grad():}
+\NormalTok{  noise }\OperatorTok{=}\NormalTok{ (torch.normal(}\DecValTok{0}\NormalTok{, }\VariableTok{self}\NormalTok{.policy\_noise, size}\OperatorTok{=}\NormalTok{action.shape).to(device)).clamp(}\OperatorTok{{-}}\VariableTok{self}\NormalTok{.noise\_clip, }\VariableTok{self}\NormalTok{.noise\_clip)}
+\NormalTok{  next\_action }\OperatorTok{=}\NormalTok{ (}\VariableTok{self}\NormalTok{.actor\_target(next\_state) }\OperatorTok{+}\NormalTok{ noise).clamp(}\OperatorTok{{-}}\VariableTok{self}\NormalTok{.max\_action, }\VariableTok{self}\NormalTok{.max\_action)}
+\NormalTok{  target\_Q1, target\_Q2 }\OperatorTok{=} \VariableTok{self}\NormalTok{.critic\_target(next\_state, next\_action)}
+\NormalTok{  target\_Q }\OperatorTok{=}\NormalTok{ torch.}\BuiltInTok{min}\NormalTok{(target\_Q1, target\_Q2)}
+\NormalTok{  target\_Q }\OperatorTok{=}\NormalTok{ reward }\OperatorTok{+}\NormalTok{ not\_done }\OperatorTok{*} \VariableTok{self}\NormalTok{.gamma }\OperatorTok{*}\NormalTok{ target\_Q}
+\NormalTok{current\_Q1, current\_Q2 }\OperatorTok{=} \VariableTok{self}\NormalTok{.critic(state, action)}
+\NormalTok{critic\_loss }\OperatorTok{=}\NormalTok{ F.mse\_loss(current\_Q1, target\_Q) }\OperatorTok{+}\NormalTok{ F.mse\_loss(current\_Q2, target\_Q)}
+\VariableTok{self}\NormalTok{.critic\_optimizer.zero\_grad()}
+\NormalTok{critic\_loss.backward()}
+\VariableTok{self}\NormalTok{.critic\_optimizer.step()}
+\ControlFlowTok{if}\NormalTok{ (update\_actor):}
+\NormalTok{  actor\_loss }\OperatorTok{=} \OperatorTok{{-}}\VariableTok{self}\NormalTok{.critic.Q1(state, }\VariableTok{self}\NormalTok{.actor(state)).mean()}
+  \VariableTok{self}\NormalTok{.actor\_optimizer.zero\_grad()}
+\NormalTok{  actor\_loss.backward()}
+  \VariableTok{self}\NormalTok{.actor\_optimizer.step()}
+  \CommentTok{\# Update target models here (rolling update)}
+  \CommentTok{\# e.g. target\_param.data.copy\_(self.tau * param.data + (1 {-} self.tau) * target\_param.data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# PPO}
+\CommentTok{\# Rollout Storage GAE Advantage Computing}
+\VariableTok{self}\NormalTok{.value\_preds[}\OperatorTok{{-}}\DecValTok{1}\NormalTok{] }\OperatorTok{=}\NormalTok{ next\_value}
+\NormalTok{gae }\OperatorTok{=} \DecValTok{0}
+\ControlFlowTok{for}\NormalTok{ step }\KeywordTok{in} \BuiltInTok{reversed}\NormalTok{(}\BuiltInTok{range}\NormalTok{(}\VariableTok{self}\NormalTok{.rewards.size(}\DecValTok{0}\NormalTok{))):}
+\NormalTok{  delta }\OperatorTok{=} \VariableTok{self}\NormalTok{.rewards[step] }\OperatorTok{+}\NormalTok{ gamma }\OperatorTok{*} \VariableTok{self}\NormalTok{.value\_preds[step }\OperatorTok{+} \DecValTok{1}\NormalTok{] }\OperatorTok{*} \VariableTok{self}\NormalTok{.masks[step }\OperatorTok{+} \DecValTok{1}\NormalTok{] }\OperatorTok{{-}} \VariableTok{self}\NormalTok{.value\_preds[step]}
+\NormalTok{  gae }\OperatorTok{=}\NormalTok{ delta }\OperatorTok{+}\NormalTok{ gamma }\OperatorTok{*} \VariableTok{self}\NormalTok{.gae\_lambda }\OperatorTok{*} \VariableTok{self}\NormalTok{.masks[step }\OperatorTok{+} \DecValTok{1}\NormalTok{] }\OperatorTok{*}\NormalTok{ gae}
+  \VariableTok{self}\NormalTok{.returns[step] }\OperatorTok{=}\NormalTok{ gae }\OperatorTok{+} \VariableTok{self}\NormalTok{.value\_preds[step]}
+\CommentTok{\# PPO Trainer Snippets}
+\KeywordTok{def}\NormalTok{ compute\_action(}\VariableTok{self}\NormalTok{, obs, deterministic}\OperatorTok{=}\VariableTok{False}\NormalTok{):}
+\NormalTok{  actions, action\_log\_probs }\OperatorTok{=} \VariableTok{None}\NormalTok{, }\VariableTok{None}
+  \ControlFlowTok{if} \VariableTok{self}\NormalTok{.discrete:}
+\NormalTok{    logits, values }\OperatorTok{=} \VariableTok{self}\NormalTok{.model(obs)}
+\NormalTok{    dist }\OperatorTok{=}\NormalTok{ Categorical(logits }\OperatorTok{=}\NormalTok{ logits)}
+\NormalTok{    actions }\OperatorTok{=}\NormalTok{ dist.probsl.argmax(dim}\OperatorTok{={-}}\DecValTok{1}\NormalTok{) }\ControlFlowTok{if}\NormalTok{ determinstic }\ControlFlowTok{else}\NormalTok{ dist.sample()}
+\NormalTok{    action\_log\_probs }\OperatorTok{=}\NormalTok{ dist.log\_prob(actions)}
+  \ControlFlowTok{else}\NormalTok{:}
+\NormalTok{    means, log\_std, values }\OperatorTok{=} \VariableTok{self}\NormalTok{.model(obs)}
+\NormalTok{    std }\OperatorTok{=}\NormalTok{ log\_std.exp()}
+\NormalTok{    dist }\OperatorTok{=}\NormalTok{ torch.distributions.Normal(means, std)}
+\NormalTok{    actions }\OperatorTok{=}\NormalTok{ means }\ControlFlowTok{if}\NormalTok{ deterministic }\ControlFlowTok{else}\NormalTok{ dist.sample()}
+\NormalTok{    action\_log\_probs }\OperatorTok{=}\NormalTok{ dist.log\_prob(actions).}\BuiltInTok{sum}\NormalTok{(dim}\OperatorTok{={-}}\DecValTok{1}\NormalTok{)}
+  \ControlFlowTok{return}\NormalTok{ values, actions, action\_log\_probs}
+\KeywordTok{def}\NormalTok{ compute\_loss(}\VariableTok{self}\NormalTok{, sample):}
+\NormalTok{  ...}
+  \CommentTok{\# Function gets logits, values from model, creates distribution, then uses dist.entropy() to get entropy}
+\NormalTok{  values, action\_log\_probs, dist\_entropy }\OperatorTok{=} \VariableTok{self}\NormalTok{.evaluate\_actions(observations\_batch, actions\_batch)}
+\NormalTok{  ...}
+\NormalTok{  ratio }\OperatorTok{=}\NormalTok{ torch.exp(action\_log\_probs }\OperatorTok{{-}}\NormalTok{ old\_action\_log\_probs) }\CommentTok{\# pi / pi\_old}
+\NormalTok{  policy\_loss }\OperatorTok{=} \OperatorTok{{-}}\NormalTok{torch.}\BuiltInTok{min}\NormalTok{(ratio }\OperatorTok{*}\NormalTok{ adv\_targ, torch.clamp(ratio, }\FloatTok{1.0} \OperatorTok{{-}} \VariableTok{self}\NormalTok{.clip\_param, }\FloatTok{1.0} \OperatorTok{+} \VariableTok{self}\NormalTok{.clip\_param) }\OperatorTok{*}\NormalTok{ adv\_targ).mean()}
+\NormalTok{  value\_loss }\OperatorTok{=}\NormalTok{ F.mse\_loss(values, return\_batch, reduction}\OperatorTok{=}\StringTok{\textquotesingle{}none\textquotesingle{}}\NormalTok{).mean() }
+\NormalTok{  loss }\OperatorTok{=}\NormalTok{ policy\_loss }\OperatorTok{+} \VariableTok{self}\NormalTok{.config.value\_loss\_weight }\OperatorTok{*}\NormalTok{ value\_loss }\OperatorTok{{-}} \VariableTok{self}\NormalTok{.config.entropy\_loss\_weight }\OperatorTok{*}\NormalTok{ dist\_entropy}
+\NormalTok{  loss }\OperatorTok{=}\NormalTok{ loss.mean()}
+  \ControlFlowTok{return}\NormalTok{ loss, policy\_loss\_mean, value\_loss\_mean, torch.mean(dist\_entropy), torch.mean(ratio)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Assignment 4}\label{assignment-4}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Behavior Cloning Loss}
+\NormalTok{pi\_s }\OperatorTok{=}\NormalTok{ policy(states)}
+\NormalTok{loss }\OperatorTok{=}\NormalTok{ F.mse\_loss(pi\_s, actions, reduction}\OperatorTok{=}\StringTok{\textquotesingle{}mean\textquotesingle{}}\NormalTok{)}
+\ControlFlowTok{return}\NormalTok{ loss}
+\CommentTok{\# HG Dagger Training}
+\ControlFlowTok{for}\NormalTok{ step }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(HG\_STEPS):}
+\NormalTok{  idx }\OperatorTok{=}\NormalTok{ np.random.choice(}\BuiltInTok{len}\NormalTok{(recov\_data), BATCH\_SIZE)}
+\NormalTok{  hg\_loss }\OperatorTok{=}\NormalTok{ compute\_bc\_loss(hg\_model, recov\_data.states[idx].to(device, recov\_data.actions[idx].to(device)))}
+\CommentTok{\# DPO Loss}
+\NormalTok{pi }\OperatorTok{=}\NormalTok{ policy(states)}
+\ControlFlowTok{with}\NormalTok{ torch.no\_grad():}
+\NormalTok{  pi\_ref }\OperatorTok{=}\NormalTok{ ref\_policy(states)}
+\NormalTok{pi\_neg\_error }\OperatorTok{=}\NormalTok{ ((pi }\OperatorTok{{-}}\NormalTok{ neg\_actions)}\OperatorTok{**}\DecValTok{2}\NormalTok{).}\BuiltInTok{sum}\NormalTok{(dim}\OperatorTok{={-}}\DecValTok{1}\NormalTok{)}
+\NormalTok{pi\_pos\_error }\OperatorTok{=}\NormalTok{ ((pi }\OperatorTok{{-}}\NormalTok{ pos\_actions)}\OperatorTok{**}\DecValTok{2}\NormalTok{).}\BuiltInTok{sum}\NormalTok{(dim}\OperatorTok{={-}}\DecValTok{1}\NormalTok{)}
+\NormalTok{ref\_neg\_error }\OperatorTok{=}\NormalTok{ ((pi\_ref }\OperatorTok{{-}}\NormalTok{ neg\_actions)}\OperatorTok{**}\DecValTok{2}\NormalTok{).}\BuiltInTok{sum}\NormalTok{(dim}\OperatorTok{={-}}\DecValTok{1}\NormalTok{)}
+\NormalTok{ref\_pos\_error }\OperatorTok{=}\NormalTok{ ((pi\_ref }\OperatorTok{{-}}\NormalTok{ pos\_actions)}\OperatorTok{**}\DecValTok{2}\NormalTok{).}\BuiltInTok{sum}\NormalTok{(dim}\OperatorTok{={-}}\DecValTok{1}\NormalTok{)}
+\NormalTok{loss }\OperatorTok{=} \OperatorTok{{-}}\NormalTok{F.logsigmoid((pi\_neg\_error }\OperatorTok{{-}}\NormalTok{ pi\_pos\_error) }\OperatorTok{{-}}\NormalTok{ (ref\_neg\_error }\OperatorTok{{-}}\NormalTok{ ref\_pos\_error)).mean()}
+\end{Highlighting}
+\end{Shaded}
+
+\end{multicols*}
+\end{document}

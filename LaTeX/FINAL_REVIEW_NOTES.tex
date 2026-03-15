@@ -1,0 +1,1324 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[twocolumn]{article}
+\usepackage[margin=0.1in,top=0.1in,bottom=0.1in]{geometry}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\usepackage{ragged2e}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{\GlobalItemSep}\setlength{\parskip}{\GlobalListParSkip}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+% --------- Compression knobs (tune these values) ---------
+\newcommand{\BodyFontSize}{\fontsize{5.2}{6.2}\selectfont}
+\newcommand{\SectionFontStyle}{\fontsize{6.4}{7.2}\selectfont\bfseries}
+\newif\ifUseRaggedRight
+\UseRaggedRighttrue
+\newif\ifUseMathabxSqbullet
+\UseMathabxSqbullettrue
+\newlength{\SectionBeforeSkip}
+\newlength{\SectionAfterSkip}
+\newlength{\GlobalItemSep}
+\newlength{\GlobalListParSkip}
+\newlength{\GlobalListTopSep}
+\newlength{\ListLabelSep}
+\newlength{\ListIndentLevelOne}
+\newlength{\ListIndentLevelTwo}
+\newlength{\ListIndentLevelThreePlus}
+\setlength{\SectionBeforeSkip}{0.35ex plus 0.1ex minus 0.05ex}
+\setlength{\SectionAfterSkip}{0.2ex plus 0.05ex}
+\setlength{\GlobalItemSep}{0pt}
+\setlength{\GlobalListParSkip}{0pt}
+\setlength{\GlobalListTopSep}{0pt}
+\setlength{\ListLabelSep}{0.15em}
+\setlength{\ListIndentLevelOne}{0.5em}
+\setlength{\ListIndentLevelTwo}{0.5em}
+\setlength{\ListIndentLevelThreePlus}{0.5em}
+\setlength{\columnsep}{8pt}
+
+% Deep nested bullet symbol (level 3+): prefer \sqbullet if available.
+\newcommand{\DeepLevelBullet}{$\scriptscriptstyle\blacksquare$}
+\ifUseMathabxSqbullet
+  \IfFileExists{mathabx.sty}{
+    \usepackage{mathabx}
+    \renewcommand{\DeepLevelBullet}{$\sqbullet$}
+  }{}
+\fi
+
+% Math spacing knobs (horizontal spacing in equations)
+% Tighten these further if gaps around '=' and '+' still look too large.
+\thinmuskip=1mu
+\medmuskip=1.5mu plus 0.5mu minus 0.5mu
+\thickmuskip=2mu plus 0.5mu minus 0.5mu
+
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}{\SectionBeforeSkip}{\SectionAfterSkip}{\normalfont\SectionFontStyle}}
+\makeatother
+
+% Underfull \hbox fix for narrow columns: avoids stretched interword spaces.
+\ifUseRaggedRight
+  \AtBeginDocument{\RaggedRight}
+\fi
+
+% Compatibility: source notes use \bold, \argmax, and \argmin in math mode.
+\providecommand{\bold}[1]{\mathbf{#1}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% Pandoc conversion creates deeply nested lists; extend itemize depth.
+\IfFileExists{enumitem.sty}{
+  \usepackage{enumitem}
+  \setlistdepth{9}
+  \renewlist{itemize}{itemize}{9}
+  \setlist[itemize]{itemsep=\GlobalItemSep,parsep=\GlobalListParSkip,topsep=\GlobalListTopSep,partopsep=0pt,labelsep=\ListLabelSep}
+  \setlist[itemize,1]{label=\textbullet,leftmargin=\ListIndentLevelOne}
+  \setlist[itemize,2]{label=$\circ$,leftmargin=\ListIndentLevelTwo}
+  \setlist[itemize,3]{label=\DeepLevelBullet,leftmargin=\ListIndentLevelThreePlus}
+  \setlist[itemize,4]{label=\DeepLevelBullet,leftmargin=\ListIndentLevelThreePlus}
+  \setlist[itemize,5]{label=\DeepLevelBullet,leftmargin=\ListIndentLevelThreePlus}
+  \setlist[itemize,6]{label=\DeepLevelBullet,leftmargin=\ListIndentLevelThreePlus}
+  \setlist[itemize,7]{label=\DeepLevelBullet,leftmargin=\ListIndentLevelThreePlus}
+  \setlist[itemize,8]{label=\DeepLevelBullet,leftmargin=\ListIndentLevelThreePlus}
+  \setlist[itemize,9]{label=\DeepLevelBullet,leftmargin=\ListIndentLevelThreePlus}
+}{
+  % If enumitem is not installed, LaTeX may fail on very deep nesting.
+}
+
+\author{}
+\date{}
+
+\begin{document}
+\BodyFontSize
+
+\section{Markov Decision Processes and Policy / Value
+Iteration}\label{markov-decision-processes-and-policy--value-iteration}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Markov Decision Processes} model environments where
+  \emph{future states} are independent of \emph{past states} given the
+  \emph{present state}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(P^\pi(s' | s) = \sum_{a \in A} \pi(a|s)P(s'|s, a)\)
+  \item
+    \(R^\pi(s) = \sum_{a \in A}\pi(a|s)R(s, a)\)
+  \end{itemize}
+\item
+  \textbf{Value Function} is the expected return starting from state
+  \(s\) and following policy \(\pi\) while the \textbf{Action-Value
+  Function} \(q^\pi(s,a)\) is the expected return starting from state
+  \(s\) and taking action \(a\), and then following policy \(\pi\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(v^\pi(s) = \sum_{a \in A}\pi(a|s)q^\pi(s, a)\)
+  \item
+    \(q^\pi(s, a) = R^a_s + \gamma \sum_{s' \in S}P(s' |s ,a) v^\pi(s')\)
+  \item
+    Bellman Relationships:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(v^\pi(s) = \mathbb{E}_\pi[R_{t+1} + \gamma v^\pi (s_{t+1}) | s_t = s] = \sum_{a \in A}\pi(a|s)(R(s, a) + \gamma \sum_{s' \in S} P(s' | s, a) v^\pi (s'))\)
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Intuition: Marginalize over all possible actions (based on
+        distribution from policy) - getting the expected return based on
+        the immediate reward as well as the discounted future reward
+        (which we must base on all possible next states given current
+        state and the marginalized action)
+      \end{itemize}
+    \item
+      \(q^\pi(s,a) = \mathbb{E}_\pi[R_{t+1} + \gamma q^\pi (s_{t+1}, A_{t+1}) | s_t = s, A_t = a] = R(s, a) + \gamma \sum_{s' \in S}P(s' | s, a) \sum_{a' \in A} \pi(a' | s')q^\pi (s', a')\)
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Intuition: The immediate action is given (as a parameter), so we
+        just need to marginalize the \emph{next state} given the current
+        state and chosen action; from there, we average over all
+        action-value functions as well
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\item
+  Given a policy and the full environment dynamics, the value function
+  associated with that policy can be computed via dynamic programming -
+  \textbf{synchronous backup}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(v_{t+1}(s) = \sum_{a \in A}\pi(a|s) (R(s, a) + \gamma \sum_{s' \in S} P(s' | s, a) v_t (s'))\)
+  \end{itemize}
+\item
+  To compute the \textbf{optimal policy}, we can maximize over the
+  optimal state-action value function
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Policy Iteration}: Iterate between evaluating the policy
+    \(\pi\) and improving it greedily with respect to \(v^\pi\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Evaluation: Use synchronous backup to find \(v^\pi\)
+    \item
+      Improvement:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Compute
+        \(q^{\pi_i}(s, a) = R(s, a) + \gamma \sum_{s' \in S}P(s' | s, a) v^{\pi_i}(s')\)
+
+        \begin{itemize}
+        \tightlist
+        \item
+          This gives a \emph{q-table}, where there is an \emph{expected
+          reward} for each action in each state
+        \end{itemize}
+      \item
+        Compute \(\pi_{i + 1}(s) = \argmax_{a} q^{\pi_i}(s, a)\)
+      \end{itemize}
+    \item
+      Repeat until convergence (policy does not change) - this means
+      \(q^\pi(s, \pi(s)) = v^\pi(s)\)
+    \end{itemize}
+  \item
+    \textbf{Value Iteration}: Iterate directly to find the optimal
+    \(v^\pi\), and then extract the policy once afterwards
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Repeat:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        \(q_{k + 1}(s, a) = R(s, a) + \gamma \sum_{s' \in S}P(s' | s, a) v_k(s')\)
+      \item
+        \(v_{k + 1}(s) = \max_{a} q_{k+1}(s,a)\)
+      \end{itemize}
+    \item
+      After convergence:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        \(\pi(s) = \argmax_{a} [R(s, a) + \gamma \sum_{s' \in S}P(s' | s, a) v_{k + 1}(s')]\)
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\item
+  The aforementioned algorithms \emph{only work if the model
+  (environment) dynamics are known}
+\end{itemize}
+
+\section{Model-Free Prediction and
+Control}\label{model-free-prediction-and-control}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Monte Carlo Policy Evaluation}: Sample trajectories, compute
+  the returns, and average them to estimate \(v^\pi(s)\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    This works well, even in known environments, if transition
+    probabilities are too complex to compute
+  \item
+    Algorithm:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Loop:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Generate an episode following \(\pi\):
+        \(S_0, A_0, R_1, S_1, A_1, R_2, ..., S_{T_1}, A_{T_1}, R_T\)
+      \item
+        Loop for each step of episode backwards:
+        \(t = T - 1, T - 2, ... 0\):
+
+        \begin{itemize}
+        \tightlist
+        \item
+          \(G \leftarrow \gamma G + R_{t+1}\)
+        \item
+          Append \(G\) to \(Returns(S_t)\)
+        \item
+          \(V(S_t) \leftarrow \text{average}(Returns(S_t))\)
+        \end{itemize}
+      \end{itemize}
+    \end{itemize}
+  \item
+    Can use an incremental mean:
+    \(\mu_t = \frac{1}{t} \sum_{j=1}^t x_j = \mu_{t-1} + \frac{1}{t}(x_t - \mu_{t-1})\)
+  \end{itemize}
+\item
+  \textbf{Temporal Difference Learning}: Uses \emph{boostrapping}, which
+  involves updating an estimate using \emph{other estimates} (like in
+  dynamic programming) rather than waiting for the whole episode to
+  complete. This is advantageous in that it can learn from
+  \emph{incomplete} sequences and \emph{non-terminating} environments
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{TD(0)}:
+    \(v(S_t) \leftarrow v(S_t) + \alpha (R_{t+1} + \gamma v(S_{t+1}) - v(S_t))\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      View \([R_{t+1} + \gamma v(S_{t+1})] - v(S_t)\) as the
+      \emph{error} of the existing estimate, which acts as a correction
+    \end{itemize}
+  \item
+    \textbf{n-step}:
+    \(G_t^n = R_{t+1} + \gamma R_{t+2} + ... + \gamma^{n-1}R_{t+n} + \gamma^n v(S_{t+n})\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(v(S_t) \leftarrow v(S_t) + \alpha(G^n_t - v(S_t))\)
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Generalized Policy Iteration}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Monte Carlo with Exploring Starts}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Loop Forever:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Choose \(S_0 \in \mathcal{S}, A_0 \in \mathcal{A}(S_0)\)
+        randomly such that all pairs have probability \textgreater{} 0
+      \item
+        Generate an episode from \(S_0, A_0\) following \(\pi\):
+        \(S_0, A_0, R_1, ..., S_{T-1}, A_{T-1}, R_t\)
+      \item
+        Loop for each step of episode backwards:
+        \(t = T - 1, T - 2, ..., 0\):
+
+        \begin{itemize}
+        \tightlist
+        \item
+          \(G \leftarrow \gamma G + R_{t+1}\)
+        \item
+          Append \(G\) to \(Returns(S_t, A_t)\)
+        \item
+          \(Q(S_t, A_t) \leftarrow \text{average}(Returns(S_t, A_t))\)
+        \item
+          \(\pi(S_t) \leftarrow \argmax_{a} Q(S_t, a)\)
+        \end{itemize}
+      \end{itemize}
+    \end{itemize}
+  \item
+    \textbf{Monte Carlo with Epsilon-Greedy Exploration}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\epsilon\)-Greedy Exploration puts probability \(1 - \epsilon\)
+      to choose the greedy (optimal) action and probability \(\epsilon\)
+      to choose a random action - the goal is to ensure there is
+      sufficient exploration being done rather than exploiting a
+      (potentially bad) policy
+    \item
+      Algorithm:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Loop:
+
+        \begin{itemize}
+        \tightlist
+        \item
+          Sample \((S_1, A_1, R_2, ..., S_T) \sim \pi_k\)
+        \item
+          For each \(S_t\) and \(A_t\):
+
+          \begin{itemize}
+          \tightlist
+          \item
+            \(N(S_t, A_t) \leftarrow N(S_t, A_t) + 1\)
+          \item
+            \(Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \frac{1}{N(S_t, A_t)}(G_t - Q(S_t, A_t))\)
+
+            \begin{itemize}
+            \tightlist
+            \item
+              This is the incremental mean
+            \end{itemize}
+          \end{itemize}
+        \item
+          \(k \leftarrow k + 1\), \(\epsilon \leftarrow 1 / k\)
+
+          \begin{itemize}
+          \tightlist
+          \item
+            Anneal \(\epsilon\)
+          \end{itemize}
+        \item
+          \(\pi_k = \epsilon-\text{greedy}(Q)\)
+        \end{itemize}
+      \end{itemize}
+    \end{itemize}
+  \item
+    \textbf{On-Policy TD Control (SARSA)}: Estimates \(Q\) using TD
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Repeat for each episode:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Initialize \(S\)
+      \item
+        Choose \(A\) from \(S\) using \(\epsilon\)-greedy policy
+      \item
+        Repeat (for each step of episode):
+
+        \begin{itemize}
+        \tightlist
+        \item
+          Take action \(A\), observe \(R\), \(S'\)
+        \item
+          Choose \(A'\) from \(S'\) using \(\epsilon\)-greedy
+        \item
+          \(Q(S, A) \leftarrow Q(S,A) + \alpha[R + \gamma Q(S', A') - Q(S, A)]\)
+
+          \begin{itemize}
+          \tightlist
+          \item
+            This can be generalized to n-step as well:
+            \(q_t^{(n)}= R_{t+1} + \gamma R_{t+2} + ... + \gamma^{n-1}R_{t+n} + \gamma^n Q(S_{t+n}, A_{t+n})\)
+          \end{itemize}
+        \item
+          \(S \leftarrow S'; A \leftarrow A'\)
+        \end{itemize}
+      \end{itemize}
+    \end{itemize}
+  \item
+    \textbf{Off-Policy TD Control (Q-Learning)}: Use \emph{two different
+    policies} - one being learned about and becomes optimal policy, and
+    another which is more exploratory (used to generate trajectories);
+    doing this allows for reuse of old experiences
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Repeat for each episode:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Initialize \(S\)
+      \item
+        Repeat (for each step of episode):
+
+        \begin{itemize}
+        \tightlist
+        \item
+          Choose \(A\) from \(S\) using \(\epsilon\)-greedy derived from
+          \(Q\)
+
+          \begin{itemize}
+          \tightlist
+          \item
+            This is the \textbf{behavior policy}, which is
+            epsilon-greedy on the target \(Q\)
+          \end{itemize}
+        \item
+          Take action \(A\), observe \(R\), \(S'\)
+        \item
+          \(Q(S, A) \leftarrow Q(S,A) + \alpha[R + \gamma \max_a Q(S', a) - Q(S, A)]\)
+
+          \begin{itemize}
+          \tightlist
+          \item
+            This is the \textbf{target policy}, which is fully greedy on
+            \(Q\)
+          \item
+            The learning \textquotesingle acts\textquotesingle{} as if
+            it took the target policy when updating, but the steps
+            actually taken in the environment solely use the behavior
+            policy
+          \end{itemize}
+        \item
+          \(S \leftarrow S'\)
+        \end{itemize}
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Importance Sampling}: Rather than sampling from a given
+  distribution, it may be easier to sample from a \emph{different
+  distribution} and then correct the weight (e.g. easier to sample from
+  behavior policy than target)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(\mathbb{E}_{\tau \sim \pi}[r(\tau)] = \int P_\pi(\tau) r(\tau) d\tau = \int P_\mu (\tau) \frac{P_\pi (\tau)}{P_\mu (\tau)} r(\tau) d\tau = \mathbb{E}_{\tau \sim \mu}[\frac{P_\pi (\tau)}{P_\mu (\tau)} r(\tau)] \approx \frac{1}{n} \sum_i \frac{P_\pi (\tau_i)}{P_\mu (\tau_i)} r(\tau_i)\)
+  \item
+    This can be used to perform off-policy Monte Carlo and TD Learning;
+    use the behavior policy to generate an episode or a TD target, and
+    then reweight the return or TD target to use for the update
+
+    \begin{itemize}
+    \tightlist
+    \item
+      e.g. TD:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        \(V(S_t) \leftarrow V(S_t) + \alpha(\frac{\pi(A_t | S_t)}{\mu(A_t | S_t)}(R_{t+1} + \gamma V(S_{t+1})) - V(S_t))\)
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\section{Value Function Approximation and Deep
+Q-Learning}\label{value-function-approximation-and-deep-q-learning}
+
+\begin{itemize}
+\tightlist
+\item
+  Same approaches as model-free prediction work with function
+  approximators
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Monte Carlo Value Function Approximation:
+    \(\Delta \bold{w} = \alpha (G_t - \hat{v}(S_t, \bold{w})) \nabla_{\bold{w}} \hat{v}(S_t, \bold{w})\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(G_t\) is \emph{unbiased}, but \emph{noisy} sample of true value
+    \end{itemize}
+  \item
+    Temporal Difference Value Function Approximation:
+    \(\Delta \bold{w} = \alpha (R_{t+1} + \gamma \hat{v}(S_{t+1}, \bold{w}) - \hat{v}(S_t, \bold{w})) \nabla_{\bold{w}} \hat{v}(S_t, \bold{w})\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(R_{t+1} + \gamma \hat{v}(S_{t+1}, \bold{w})\) is \emph{biased}
+      estimate of true value since it is drawn from previous estimate
+    \item
+      The gradient ascent update is an example of \textbf{semi-gradient}
+      learning
+    \end{itemize}
+  \end{itemize}
+\item
+  The model-free control algorithms are \emph{also} similar -
+  approximate \(q\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    MC:
+    \(\Delta \bold{w} = \alpha (G_t - \hat{q}(S_t, A_t, \bold{w})) \nabla_{\bold{w}} \hat{q} (S_t, A_t, \bold{w})\)
+  \item
+    Sarsa:
+    \(\Delta \bold{w} = \alpha (R_{t+1} + \gamma \hat{q}(S_{t+1}, A_{t+1}, \bold{w}) - \hat{q}(S_t, A_t, \bold{w})) \nabla_{\bold{w}} \hat{q} (S_t, A_t, \bold{w})\)
+  \item
+    Q-Learning:
+    \(\Delta \bold{w} = \alpha (R_{t+1} + \gamma \max_a \hat{q}(S_{t+1}, a, \bold{w}) - \hat{q}(S_t, A_t, \bold{w})) \nabla_{\bold{w}} \hat{q} (S_t, A_t, \bold{w})\)
+  \end{itemize}
+\item
+  Linear Least-Squares Prediction Algorithms:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    LSMC:
+    \(0 = \sum_{t=1}^T \alpha(G_t - \hat{v}(S_t, \bold{w}))\bold{x}(S_t)\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\bold{w} = (\sum_{t=1}^T \bold{x}(S_t) \bold{x}(S_t)^T)^{-1} \sum_{t=1}^T \bold{x}(S_t)G_t\)
+    \end{itemize}
+  \item
+    LSTD:
+    \(0 = \sum_{t=1}^T \alpha(R_{t+1} + \gamma \hat{v}(S_{t+1}, \bold{w}) - \hat{v}(S_t, \bold{w}))\bold{x}(S_t)\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\bold{w} = (\sum_{t=1}^T \bold{x}(S_t) \bold{x}(S_t)^T - \gamma \bold{x}(S_{t+1}))^{-1} \sum_{t=1}^T \bold{x}(S_t)R_{t+1}\)
+    \end{itemize}
+  \item
+    LSDQ:
+    \(0 = \sum_{t=1}^T \alpha(R_{t+1} + \gamma \hat{q} (S_{t+1}, \pi (S_{t+1}), \bold{w}) - \hat{q} (S_t, A_t, \bold{w}))\bold{x} (S_t, A_t)\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\bold{w} = (\sum_{t=1}^T \bold{x} (S_t, A_t)(\bold{x} (S_t, A_t) - \gamma \bold{x} (S_{t+1}, \pi (S_{t+1})))^T)^{-1} \sum_{t=1}^T \bold{x} (S_t, A_t) R_{t+1}\)
+    \item
+      Sample \(S_t, A_t, R_{t+1}, S_{t+1}\) from old policy to generate
+      an experience replay
+    \end{itemize}
+  \end{itemize}
+\item
+  Deep Q-Learning: Standard Q-Learning approach, \emph{however},
+  incorporates (1) \textbf{Experience replay} to address correlation
+  between samples and (2) \textbf{Fixed Q targets} to handle
+  non-stationary targets
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Experience Replay: Store \((s_t, a_t, r_t, s_{t+1})\) suples in
+    replay memory, and then sample an experience tuple (or batch) from
+    this memory to compute the target value and prediction used to
+    perform gradient descent
+  \item
+    Fixed Targets: Use \(\bold{w^-}\) as the set of weights used in the
+    \emph{target} and \(\bold{w}\) as the set of weights being updated.
+    Periodically adjust \(\bold{w^-} \leftarrow \bold{w}\) (frequency is
+    hyperparameter)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\Delta \bold{w} = \alpha (r + \gamma \max_a \hat{Q}(s', a', \bold{w^-}) - \hat{Q}(s, a, \bold{w}))\nabla_{\bold{w}} \hat{Q}(s, a, \bold{w})\)
+    \end{itemize}
+  \item
+    Some improvements: \textbf{Double DQN}: use \emph{two networks},
+    where one performs the action selection and another creates the
+    target value (\(\argmax \hat{Q}\) term); \textbf{Dueling DQN}:
+    branch the same network where one branch generates \(V(s)\) and the
+    other generates \(A(s, a)\) so that (\(Q(s, a) = A(s, a) + V(s)\)) -
+    the goal is to encourage learning which states are valuable without
+    needing to learn the effect of action at each state;
+    \textbf{Prioritized Experience Replay}: Prioritize experiences where
+    there is a big difference between prediction and TD target (can use
+    a priority queue)
+  \end{itemize}
+\item
+  Some issues that can lead to instability in training -
+  \textbf{function approximators}, \textbf{bootstrapping}, and
+  \textbf{off-policy training}
+\item
+  Batch-based methods are often used for training - this is more
+  sample-efficient
+\end{itemize}
+
+\section{Policy Optimization I: Policy Gradient and
+Actor-Critic}\label{policy-optimization-i-policy-gradient-and-actor-critic}
+
+\begin{itemize}
+\tightlist
+\item
+  Parameterize and optimize policy directly
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Discrete Policy (\textbf{Softmax}):
+    \(\pi_\theta (a | s) = \frac{\exp (\phi(s, a)^{T} \theta)}{\sum_{a'} \exp (\phi(s, a')^T \theta)}\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\nabla_\theta \log \pi_\theta (a|s) = \phi(s,a) - \mathbb{E}_{\pi_\theta}[\phi(s, .)]\)
+    \end{itemize}
+  \item
+    Continuous Policy (\textbf{Gaussian)}:
+    \(\mu (s) = \phi(s)^T \theta\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(a \sim \mathcal{N} (\mu (s), \sigma^2)\)
+    \item
+      \(\nabla \theta \log(\pi_\theta) (a |s) = \frac{(a - \mu(s)) \phi(s)}{\sigma^2}\)
+    \end{itemize}
+  \end{itemize}
+\item
+  Gradient-Free Methods:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Evolution Strategy}: Perturb \(\theta\) with multiple noises
+    and execute rollouts to compute \(J(\theta)\) for each; set new
+    \(\theta\) to weighted sum based on scores
+    (\(\theta_{t+1} \leftarrow \theta_t + \alpha \frac{1}{n \delta} \sum_{i=1}^n J(\theta_i) \epsilon_i\))
+  \item
+    \textbf{Cross-Entropy Method}: Sample \(\theta\) from distribution,
+    execute rollouts, and then update \(\mu\) (distribution parameter)
+    to maximize the likelihood of the top n\% of \(\theta\) generated
+    based on score
+    (\(\mu^{(i+1)} = \argmax_\mu \sum_{k \in \hat{C}} \log P_\mu (\theta^{(k)})\))
+  \end{itemize}
+\item
+  Log Ratio Trick:
+  \(\nabla_\theta \pi_\theta (a|s) = \pi_\theta (a|s) \frac{\nabla_\theta \pi_\theta (a|s)}{\pi_\theta (a|s)} = \pi_\theta (a|s) \nabla_\theta \log \pi_\theta (a|s)\)
+\item
+  The objective of policy gradient is to maximize the reward from a
+  trajectory sampled from the policy:
+  \(J(\theta) = \mathbb{E}_{\pi_\theta}[\sum_{t=0}^T R(s_t, a_t)] = \sum_\tau P(\tau ; \theta) R(\tau)\)
+  where
+  \(\tau = (s_0, a_0, r_1, ..., s_{T-1}, a_{T-1}, r_T, s_T) \sim (\pi_\theta, P(s_{t+1} | s_t, a_t))\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    To get this in a differentiable form:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\nabla_\theta J(\theta) = \nabla_\theta \sum_\tau P(\tau ; \theta) R(\tau) = \sum_\tau P(\tau; \theta) R(\tau) \nabla_\theta \log P(\tau; \theta)\)
+      (\textbf{log ratio trick})
+    \item
+      \(\approx \frac{1}{m}\sum_{i=1}^m R(\tau_i) \nabla_\theta \log P(\tau_i; \theta)\)
+      (\textbf{estimate of expectation over \(\tau\)})
+    \item
+      \(= \frac{1}{m}\sum_{i=1}^m R(\tau_i) \nabla_\theta \log [\mu(s_0) \prod_{t=0}^{T-1} \pi_\theta (a_t | s_t) p(s_{t+1} | s_t, a_t)]\)
+      (\textbf{decomposition of \(P\)})
+    \item
+      \(= \frac{1}{m}\sum_{i=1}^m R(\tau_i) \nabla_\theta [\log \mu(s_0) + \sum_{t=0}^{T-1} \log \pi_\theta (a_t | s_t) + \log p(s_{t+1} | s_t, a_t)]\)
+      (\textbf{can eliminate transition dynamics since they are not a
+      function of \(\theta\)})
+    \item
+      \(\nabla_\theta J(\theta) \approx \frac{1}{m} \sum_{i=1}^m R(\tau_i) \sum_{t=0}^{T-1} \nabla_\theta \log \pi_\theta (a^i_t | s^i_t)\)
+
+      \begin{itemize}
+      \tightlist
+      \item
+        This is shifting the distribution (\(\pi\)) through parameter
+        \(\theta\) in a way to ensure future samples achieve higher
+        scores based on the reward function - this is akin to
+        \textbf{weighted maximum likelihood}
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Temporal Causality}: Policy should not affect rewards from the
+  past, so only sum \emph{future rewards}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(\nabla_\theta J(\theta) = \mathbb{E}_\tau [\sum_{t=0}^{T-1} \nabla_\theta \log \pi_\theta (a_t | s_t) \sum_{t' = t}^{T-1} r_t'] \approx \frac{1}{m} \sum_{i=1}^m \sum_{t = 0}^{T-1} G_t^{(i)} \cdot \nabla_\theta \log \pi_\theta (a^i_t | s^i _t)\)
+  \end{itemize}
+\item
+  \textbf{Baselines}: Reduce variance by subtracting a baseline
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(\nabla_\theta J(\theta) = \mathbb{E}_\tau [\sum_{t=0}^{T-1} (G_t - b) \cdot \nabla_\theta \log \pi_\theta (a_t | s_t)]\)
+    where \(b = \mathbb{E} [r_t + r_{t+1} + ... + r_{T-1}]\) (expected
+    return)
+  \end{itemize}
+\item
+  \textbf{REINFORCE}: On-policy algorithm
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Generate episode following \(\pi(\theta)\)
+  \item
+    For each step of episode:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Let \(G\) be the return from step \(t\) onwards
+    \item
+      \(\theta \leftarrow \theta + \alpha \gamma^t G \nabla_\theta \log \pi (A_t | S_t, \theta)\)
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Actor-Critic}: Instead of using \(G_t\), which is sampled from
+  Monte Carlo, use a critic to estimate the action-value function. This
+  implies \emph{two sets of parameters} - one for the actor (policy
+  function), and one for the critic (value function)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(\nabla_\theta J(\theta) = \mathbb{E}_{\pi_\theta} [\sum_{t=0}^{T-1} Q_w (s_t, a_t) \cdot \nabla_\theta \log \pi_\theta (a_t | s_t)]\)
+  \item
+    Critic parameters can be updated using any prior approach (Monte
+    Carlo, TD, etc.)
+  \item
+    Baseline can be applied here as well - the state-value function can
+    be used to form the baseline (\textbf{advantage function})
+    \(A^{\pi, \gamma}(s,a) = Q^{\pi, \gamma}(s, a) - V^{\pi, \gamma}(s)\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Rather than maintain \emph{two sets of parameters} for just the
+      critic, it can be recognized that the TD error is an unbiased
+      estimate of the advantage function:
+    \item
+      \(\mathbb{E}_{\pi_\theta}[\delta^{\pi_\theta} | s, a] = \mathbb{E}_{\pi_\theta} [r + \gamma V^{\pi_\theta}(s') |s, a] - V^{\pi_\theta}(s) = Q^{\pi_\theta}(s, a) - V^{\pi_\theta}(s) = A^{\pi_\theta}(s,a)\)
+    \item
+      \(\nabla_\theta J(\theta) = \mathbb{E}_{\pi_\theta}[\nabla_\theta \log \pi_\theta (a |s)\delta^{\pi_\theta}]\),
+      where \(\delta_v = r + \gamma V_{\kappa}(s') - V_\kappa (s)\)
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Just need to maintain weights for \(V\), which can be updated
+        using MC, TD, etc. (e.g.
+        \(\Delta \kappa = \alpha (G - V_\kappa (s)) \psi (s)\))
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\section{Policy Optimization II}\label{policy-optimization-ii}
+
+\begin{itemize}
+\tightlist
+\item
+  Turn Policy Gradient into an \emph{off-policy} algorithm via
+  \textbf{importance sampling}, where the \emph{old policy} is sampled
+  from (using replay buffer) rather than the current one; must
+  incorporate a constraint to limit excessive changes between subsequent
+  policies (creates a \textbf{trust region})
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(J(\theta) = \mathbb{E}_{s, a \sim \pi_\theta}[r(s, a)] = \mathbb{E}_{s, a \sim \hat{\pi}}[\frac{\pi_\theta(s,a)}{\hat{\pi}(s,a)}r(s,a)]\)
+    subject to
+    \(KL(\pi_{\theta_{\text{old}}} ||\pi_\theta) = \sum_a \pi_{\theta_{\text{old}}}(a|s) \log \frac{\pi_\theta (a|s)}{\pi_{\theta_{\text{old}}}(a|s)} \leq \delta\)
+  \end{itemize}
+\item
+  \textbf{Natural Policy Gradient}: Use second-order optimization
+  methods to solve aforementioned constrained objective
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Collect trajectories \(\mathcal{D}_k\) on policy
+    \(\pi_k = \pi(\theta_k)\)
+  \item
+    Estimate advantages \(\hat{A}_t^{\pi_k}\) using any method
+  \item
+    Estimate \(g = \nabla_\theta J_{\theta_t}(\theta)\) and
+    \(H = \nabla^2_\theta KL(\theta || \theta_t)\), which can also be
+    expressed as
+    \(F=\mathbb{E}_{\pi_\theta(s,a)}[\nabla \log \pi_\theta (s, a) \nabla \log \pi_\theta (s, a)^T]\)
+  \item
+    Compute update:
+    \(\theta_{k+1}=\theta_k + \sqrt{\frac{2\delta}{\hat{g}_k^T \hat{H}_k^{-1}\hat{g}_k}}\hat{H}_k^{-1}\hat{g}_k\)
+  \item
+    \textbf{Disadvantage}: \(H\) and \(H^{-1}\) can be very difficult to
+    compute
+  \end{itemize}
+\item
+  \textbf{Trust Region Policy Optimization}: Estimates \(x=H^{-1}g\) by
+  solving \(Hx=g\), which is equivalent to solving
+  \(\min_x \frac{1}{2}x^T H x - g^Tx\) - do this via conjugate gradient
+  method
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Disadvantage}: Computing \(H\) is still expensive, and
+    requires a large batch of rollouts to properly approximate \(H\)
+  \end{itemize}
+\item
+  \textbf{Proximal Policy Optimization (PPO) with Adaptive KL Penalty}:
+  Incorporate the KL constraint into the objective directly
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Collect set of partial trajectories \(\mathcal{D}_k\) on
+    \(\pi_k = \pi(\theta_k)\)
+  \item
+    Estimate advantages \(\hat{A}_t^{\pi_k}\) using any method
+  \item
+    \(\theta_{k+1} = \argmax_\theta \mathbb{E}_{\pi_{\theta_{\text{old}}}}[\frac{\pi_\theta (a_t | s_t)}{\pi_{\theta_{\text{old}}}(a_t | s_t)}A_t] - \beta \mathbb{E}_{\pi_{\theta_{\text{old}}}}[KL[\pi_{\theta_{\text{old}}}, \pi_\theta]]\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Using SGD
+    \end{itemize}
+  \item
+    if \(D_{KL}(\theta_{k+1}||\theta_k) \geq 1.5\delta\) then
+    \(\beta_{k+1} = 2\beta_K\) else \(\beta_{k+1} = \beta_k / 2\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      If there are significant differences, then have a higher
+      divergence penalty
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{PPO with Clipping}: Axe using KL divergence and instead clip
+  the advantage function directly to avoid too large of changes in
+  probability ratio
+  \(r_t(\theta) = \frac{\pi_\theta (a_t | s_t)}{\pi_{\theta_{\text{old}}}(a_t | s_t)}\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(L_t (\theta) = \min(r_t (\theta) \hat{A}_t, \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon) \hat{A}_t)\)
+  \end{itemize}
+\item
+  \textbf{Deep Deterministic Policy Gradient (DDPG)}: Extend DQN to
+  \emph{continuous} action space. Still utilize replay buffer and target
+  network logic as with DQN
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(a^* = \argmax_a Q^* (s, a) \approx \argmax_\theta Q_\phi (s, \mu_\theta(s))\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Train policy \(\mu_\theta(s)\) to give action that maximizes
+      \(Q_\phi(s,a)\)
+    \end{itemize}
+  \item
+    \textbf{Q-Function Update}:
+    \(\min \mathbb{E}_{s, r, s', d \sim \mathcal{D}}[(r + \gamma Q_{\phi_{\text{targ}}}(s', \mu_{\theta_{\text{targ}}}(s')) - Q_\phi (s,a))^2]\)
+  \item
+    \textbf{Policy Update}:
+    \(\max_\theta \mathbb{E}_{s \sim \mathcal{D}}[Q_\phi (s, \mu_\theta(s))]\)
+  \item
+    \textbf{Disadvantage}: Tends to \emph{dramatically overestimate
+    Q-values}
+  \end{itemize}
+\item
+  \textbf{Twin Delayed DDPG (TD3)}: Addresses issues with DDPG
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Double-Q}: Learn two Q functions, \(Q_{\phi_1}\) and
+    \(Q_{\phi_2}\) using the same aforementioned loss function, but have
+    the target be the smaller of the two:
+    \(y(r, s') = r + \gamma \min_{i=1,2} Q_{\phi_{i, targ}} (s', a_{TD3}(s'))\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Note that there are still \emph{two target networks} for each Q
+      function
+    \end{itemize}
+  \item
+    \textbf{Target Policy Smoothing}:
+    \(a_{TD3}(s') = \text{clip}(\mu_{\theta, \text{targ}}(s') + \text{clip}(\epsilon, -c, c), a_{low}, a_{high}), \epsilon \sim \mathcal{N}(0, \sigma)\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      This regularizes by avoiding incorrect sharp peak for some actions
+      output by the policy
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Soft Actor-Critic (SAC)}: Incorporates \textbf{entropy
+  regularization} to ensure there is a tradeoff between expected return
+  and entropy in the policy - this encourages exploration
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Q-Function Update:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(L(\phi_i, \mathcal{D}) = \mathbb{E}[(Q_\phi(s,a) - y(r, s', d))^2]\)
+    \item
+      \(y(r, s') = r + \gamma(\min_{j=1,2} Q_{\phi_{targ, j}}(s', \hat{a}') - \alpha \log \pi_\theta (\hat{a}' |s'))\)
+    \item
+      \(\hat{a}' \sim \pi_\theta(\cdot | s')\)
+
+      \begin{itemize}
+      \tightlist
+      \item
+        No need to reparameterize here because the gradient is for
+        \(\phi\), not \(\theta\)
+      \end{itemize}
+    \end{itemize}
+  \item
+    Policy Update:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\max_\theta E_{s \sim \mathcal{D}, \epsilon \sim \mathcal{N}} [\min_{j=1,2} Q_{\phi_j}(s, \hat{a}_\theta (s, \epsilon)) - \alpha \log \pi_\theta (\hat{a}_\theta (s, \epsilon) | s)]\)
+    \item
+      To avoid the dependency of sampling from the policy in the
+      objective, we used a \textbf{reparameterization trick} to instead
+      sample over noise
+
+      \begin{itemize}
+      \tightlist
+      \item
+        \(\hat{a}_\theta(s, \epsilon) = \tanh(\mu_\theta(s) + \sigma_\theta (s) \odot \epsilon), \epsilon \sim \mathcal{N}(0, I)\)
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\section{Model-Based Reinforcement
+Learning}\label{model-based-reinforcement-learning}
+
+\begin{itemize}
+\tightlist
+\item
+  Learn a \textbf{model} that can be used to \emph{plan} a better policy
+  - this is much more \emph{sample efficient}, but can be difficult to
+  learn since now there are two sources of error
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Model learns to predict \(S_{t+1}\) and \(R_{t+1}\) in a supervised
+    fashion from collected trajectories
+  \item
+    Planning: Sample experiences from the model and then use model-free
+    reinforcement learning algorithms (Monte Carlo, Sarsa, Q-Learning)
+    to the sampled experiences to learn
+  \end{itemize}
+\item
+  \textbf{Dyna-Q} (Model-Based Value Optimization):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Execute action \(A\) based on policy (e.g. \(\epsilon\)-greedy), and
+    observe resultant \(R\) and \(S'\)
+  \item
+    \(Q(S,A) \leftarrow Q(S,A) + \alpha [R + \gamma \max_a Q(S', a) - Q(S, A)]\)
+  \item
+    Update model from collected \(R\) and \(S'\) (e.g. regression)
+  \item
+    Repeat \(n\) times:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(S \leftarrow \text{random previously observed state}\);
+      \(A \leftarrow \text{random action previously taken in S}\)
+    \item
+      \(R, S' \leftarrow \text{Model}(S,A)\)
+    \item
+      \(Q(S,A) \leftarrow Q(S,A) + \alpha [R + \gamma \max_a Q(S' ,a) - Q(S,A)]\)
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Model-Based Policy Optimization}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Linear-Quadratic Regulator} methods can be used to solve
+    \(\min_{a_i, ..., a_t}\sum_{t=1}^T c(s_t, a_t)\) subject to
+    \(s_t = f(s_{t-1}, a_{t-1})\), where \(c\) is the cost function (can
+    use \emph{negative reward}) and \(s_t\) is the transition dynamics
+  \item
+    Algorithm (Planning Incorporated):
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Run base policy \(\pi_0(a_t | s_t)\) to collect
+      \(\mathcal{D} = \{(s, a, s')_i\}\)
+    \item
+      Loop every step:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Loop every N steps:
+
+        \begin{itemize}
+        \tightlist
+        \item
+          Learn dynamics model \(s' = p(s, a)\) to minimize
+          \(\sum_i ||f(s_i, a_i) - s'_i||^2\)
+        \end{itemize}
+      \item
+        Plan through \(f(s, a)\) to choose actions (use LQR method)
+      \item
+        Execute first planned action and observe resulting state
+      \item
+        Append \((s, a, s')\) to dataset \(\mathcal{D}\)
+      \end{itemize}
+    \end{itemize}
+  \item
+    Algorithm (Learning and Planning Incorporated):
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Run base policy \(\pi_0(a_t | s_t)\) to collect
+      \(\mathcal{D} = \{(s, a, s')_i\}\)
+    \item
+      Loop:
+
+      \begin{itemize}
+      \tightlist
+      \item
+        Learn dynamics model \(f(s, a)\) to minimize
+        \(\sum_i ||f(s_i, a_i) - s'_i||^2\)
+      \item
+        Backpropagate through \(f(s, a)\) into policy to optimize
+        \(\pi_\theta(a_t | s_t)\)
+      \item
+        Run \(\pi_\theta (a_t | s_t)\), appending visited \((s, a, s')\)
+        to \(\mathcal{D}\)
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\section{Imitation Learning}\label{imitation-learning}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Imitation Learning} becomes a \emph{supervised learning} of
+  the policy network, but standard behavioral cloning is limited since
+  the policy can run into off-course situations
+\item
+  \textbf{Dataset Aggregation (DAgger)}: Initially collect human data
+  and train \(\pi_\theta\) from human data. Then, run \(\pi_\theta\) to
+  get a new dataset that is then \emph{labeled by humans with correct
+  actions}. Finally, aggregate the newly labeled dataset with the
+  original (already labeled dataset)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Human annotation is expensive - could try to substitute this out
+    with an offline brute-force search (e.g. other, much slower
+    algorithm)
+  \end{itemize}
+\item
+  \textbf{HG-DAgger}: Same approach as dagger, but instead \emph{gate}
+  human intervention - if human decides to take control, then record
+  their state and actions into the dataset
+
+  \begin{itemize}
+  \tightlist
+  \item
+    One drawback here is that the bad agent actions are ignored in the
+    original formulation:
+    \(\mathcal{L}_{\text{HG-DAgger}(\pi)} = \mathbb{E}_{(s, a_h) \sim \mathcal{D}_{\text{takeover}}}[||\pi(s) - a_h||^2]\)
+  \end{itemize}
+\item
+  \textbf{Proxy Value Propagation}: In cases of intervention, discourage
+  agent action \(a_n\) while promoting human action \(a_h\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(J^{PV}(\theta) = \mathbb{E}_{(s, a_n, a_h)}[|Q_\theta (s, a_h) - 1|^2 + |Q_\theta(s, a_n) + 1|^2]\)
+  \item
+    \(J^{TD}(\theta) = \mathbb{E}_{(s, a, s')}[|Q_\theta(s,a) - \gamma \max_{a'} Q_\theta (s', a)|^2]\)
+  \item
+    \(J(\theta) = J^{PV}(\theta) + J^{TD}(\theta)\) (Learn policy via
+    \(Q\) optimized from \(J\))
+  \end{itemize}
+\item
+  \textbf{Predictive Preference Learning}: Provide a visualization of
+  agent trajectory, and leverage preference learning on human
+  trajectories when they decide to takeover
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(L(\pi) = \mathbb{E}_{s, a^+, a^-} [\log \sigma (\beta \log \frac{\pi(a^+ | s)}{\pi (a^- | s)})]\)
+  \end{itemize}
+\item
+  \textbf{Adaptive Intervention Mechanism (AIM)}: Learn an uncertainty
+  estimator such that the agent requests help when necessary (e.g. when
+  \(Q_\theta (s, a_n) < \delta\) quantile of \(Q_\theta(s, a_n)\))
+\item
+  \textbf{Inverse Reinforcement Learning}: Provide expert data to learn
+  a cost/reward function to explain expert behaviors
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Maximum Entropy IRL}: Observed trajectories:
+    \(\mathcal{D} = \{\tau_i\}\), model reward linearly
+    \(R(\tau) = \sum_t w^T \phi(s_t, a_t)\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Optimize for distribution that matches expert behavior but is
+      otherwise maximally uncertain:
+      \(\max_{p(\tau)} H(p) = - \sum_\tau p(\tau) \log p(\tau)\) subject
+      to \(\mathbb{E}_p [\phi(\tau)] = \hat{\phi}_{expert}\)
+    \item
+      Result: \(p(\tau | w) = \frac{1}{Z(w)}\exp(R(\tau))\) where
+      \(Z(w) = \sum_\tau \exp(R(\tau))\) (expert trajectories
+      expontentially more likely if rewards are high)
+    \item
+      \(\mathcal{L} (w) = \sum_{\tau \in \mathcal{D}}[R(\tau) - \log Z(w)]\)
+    \end{itemize}
+  \item
+    \textbf{Generative Adversarial Imitation Learning (GAIL)}: Train a
+    discriminator to predict whether a given state \(s\) and action
+    \(s\) is sampled from the demonstrations \(M\) or generated by
+    running the policy \(\pi\)
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\argmin_D - \mathbb{E}_{d^{\mathcal{M}}(s, a)}[\log (D(s,a))] - \mathbb{E}_{d^\pi (s,a)}[\log (1 - D(s,a))]\)
+    \item
+      Train policy with \(r_t = -\log (1 - D(s_t, a_t))\)
+    \item
+      If there are state-only demonstrations, then
+      \(\argmin_D - \mathbb{E}_{d^{\mathcal{M}}(s, s')}[\log (D(s, s'))] - \mathbb{E}_{d^\pi (s, s')}[\log (1 - D(s, s'))]\)
+      and
+      \(r(s_t, s_{t+1}) = \max [0, 1 - 0.25 (D(s_t, s_{t+1}) - 1)^2]\)
+    \end{itemize}
+  \end{itemize}
+\item
+  Common paradigm is to \textbf{use imitation learning for pretraining}
+  and then \textbf{finetune with standard methods (e.g. policy
+  gradient)}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    To avoid forgetting demonstrations, try to leverage off-policy
+    reinforcement learning so that the demonstrations can be injected
+    into the off-policy samples (maybe with \emph{importance sampling})
+  \end{itemize}
+\end{itemize}
+
+\section{System Design}\label{system-design}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Model Parallelism}: Different machines are responsible for
+  computation in parts of a \emph{single network}
+\item
+  \textbf{Data Parallelism}: Different machines have the complete copy
+  of the model, but get different portions of the data
+\item
+  Approaches to Parameter Updating in Distributed Systems:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Parameter Averaging}: Distribute copy of parameters to each
+    worker, then train each worker on subset of data, and set up the
+    global parameters to average the parameters from each worker -
+    repeat
+  \item
+    \textbf{Distributed Stochastic Gradient Descent}: Transfer just
+    updates (gradient) to the parameter server, and server periodically
+    transfers weights to worker machines
+  \item
+    \textbf{Synchronous Updates} have agents training in parallel but
+    then wait until all updates are collected before enforcing on global
+    network; \textbf{Asynchronous Updates} have the global network
+    updated periodically by individual workers but not necessarily
+    simulatenously
+  \item
+    \textbf{Hogwild}: Normally, lock-based SGD requires a lock on
+    current state of parameters before updating; however, since updates
+    are often sparse there is no need for the locks since there is still
+    convergence
+  \end{itemize}
+\item
+  \textbf{Distributed Architectures}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Separate out replay memory, actors, parameter servers, and learners
+  \end{itemize}
+\end{itemize}
+
+\end{document}
